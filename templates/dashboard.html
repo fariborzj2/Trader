@@ -11,30 +11,29 @@
 <body>
     <div class="main-container">
         <header>
-            <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="display: flex; position: relative; align-items: center; gap: 12px;">
                 <!-- لوگو -->
-                <img src="{% static 'images/logo.png' %}" 
+                <img src="{% static 'images/logo.svg' %}" 
                     alt="Proopco Trader Logo" 
-                    style="height: 45px; width: auto; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));">
+                    style="height: 25px; width: auto; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));">
 
                 <!-- عنوان -->
                 <h1 style="margin: 0; 
-                        font-size: 1.45rem; 
-                        font-weight: 800; 
+                        font-size: 1.1rem; 
+                        font-weight: 400; 
                         letter-spacing: -0.03em; 
-                        background: linear-gradient(90deg, #facc15, #eab308, #ca8a04);
-                        -webkit-background-clip: text;
-                        -webkit-text-fill-color: transparent;
+                        color: #b9a278;
+                        opacity: 0;
+                        visibility: hidden;
+                        position: absolute;
+                        text-indent: -9999px;
                         font-family: 'Estedad', sans-serif;">
-                    Proopco Trader
+                    پراپ تـریدر پراپکو
                 </h1>
             </div>
 
             <!-- بخش راست هدر: تم + خروج -->
             <div style="display: flex; align-items: center; gap: 16px;">
-                <div class="theme-toggle" onclick="toggleTheme()" title="تغییر تم" style="font-size: 1.4rem; cursor: pointer;">
-                    <span id="theme-icon">☀️</span>
-                </div>
                 <a href="{% url 'logout' %}" class="logout-btn">خروج</a>
             </div>
         </header>
@@ -57,17 +56,20 @@
                     <label>TP:</label>
                     <input class="trade-input" type="number" name="take_profit" step="0.00001">
                     <input type="hidden" name="type" id="trade-type" value="buy">
-                    <button class="trade-btn buy" type="button" onclick="setTradeType('buy')">خرید</button>
-                    <button class="trade-btn sell" type="button" onclick="setTradeType('sell')">فروش</button>
+                    <div style="display: flex; gap: 8px; margin-top: 8px; margin-bottom: 8px;">
+                        <button class="trade-btn buy" type="button" onclick="setTradeType('buy')">خرید</button>
+                        <button class="trade-btn sell" type="button" onclick="setTradeType('sell')">فروش</button>
+                    </div>
+                    
                 </form>
 
                 <button type="button" onclick="openRiskModal()" 
-                        style="margin-top: 12px; width: 100%; background: #3b82f6; color: white; border: none; border-radius: 8px; padding: 0.65rem; font-weight: 600; font-size: 0.9rem; cursor: pointer;">
+                        style="margin-top: 12px; width: 100%; background: #252a32; color: white; border: none; border-radius: 8px; padding: 0.65rem; font-size: 0.9rem; cursor: pointer;">
                     📊 اکسپرت مدیریت سرمایه
                 </button>
 
                 <button type="button" onclick="openPendingModal()" 
-                        style="margin-top: 8px; width: 100%; background: #8b5cf6; color: white; border: none; border-radius: 8px; padding: 0.65rem; font-weight: 600; font-size: 0.9rem; cursor: pointer;">
+                        style="margin-top: 8px; width: 100%; background: #252a32; color: white; border: none; border-radius: 8px; padding: 0.65rem; font-size: 0.9rem; cursor: pointer;">
                     📍 اوردر پندینگ
                 </button>
 
@@ -84,17 +86,17 @@
             <!-- Chart Section -->
             <div class="chart-section">
                 <div class="symbol-selector" id="symbol-selector">
-    <button class="symbol-btn active" data-symbol="US30">US30</button>
-    <button class="symbol-btn" data-symbol="XAUUSD">XAUUSD</button>
-    <button class="symbol-btn" data-symbol="EURUSD">EURUSD</button>
-    <button class="symbol-btn" data-symbol="AUDUSD">AUDUSD</button>
-    <button class="symbol-btn" data-symbol="NZDUSD">NZDUSD</button>
-    <button class="symbol-btn" data-symbol="USDJPY">USDJPY</button>
-    <button class="symbol-btn" data-symbol="NAS100_USD">NAS100</button>
-    <button class="symbol-btn" data-symbol="FXCM_USOIL">USOIL</button>
-    <button class="symbol-btn" data-symbol="ETHUSDT">ETHUSDT</button>
-</div>
-                <div style="width: 100%; flex: 1; min-height: 0; display: flex; flex-direction: column; align-items: center; background: var(--bg-panel); border-radius: 8px; overflow: hidden; box-shadow: var(--shadow-lg);">
+                    <button class="symbol-btn active" data-symbol="US30">US30</button>
+                    <button class="symbol-btn" data-symbol="XAUUSD">XAUUSD</button>
+                    <button class="symbol-btn" data-symbol="EURUSD">EURUSD</button>
+                    <button class="symbol-btn" data-symbol="AUDUSD">AUDUSD</button>
+                    <button class="symbol-btn" data-symbol="NZDUSD">NZDUSD</button>
+                    <button class="symbol-btn" data-symbol="USDJPY">USDJPY</button>
+                    <button class="symbol-btn" data-symbol="NAS100_USD">NAS100</button>
+                    <button class="symbol-btn" data-symbol="FXCM_USOIL">USOIL</button>
+                    <button class="symbol-btn" data-symbol="ETHUSDT">ETHUSDT</button>
+                </div>
+                <div style="width: 100%; flex: 1; min-height: 0; display: flex; flex-direction: column; align-items: center; background: var(--bg-panel); overflow: hidden;">
                     <div id="bitycle-ac-widget" style="width: 100%; height: 100%; min-height: 0;"></div>
                 </div>
             </div>
@@ -366,7 +368,7 @@
                 <label style="display:block;margin:8px 0 4px;font-size:0.8rem;color:#64748b;">استاپ لاس (SL)</label>
                 <input type="number" id="modal-sl-input" class="modal-input" step="0.00001" placeholder="مثلاً 1.08500">
                 <div id="modal-risk-info" style="font-size:0.8rem; color:#64748b; margin:8px 0; text-align:center; min-height:22px;">ریسک: — $</div>
-                <button class="modal-btn" onclick="calculateSafeVolumeModal()" style="background:#3b82f6; margin-bottom:8px;">محاسبه حجم ایمن</button>
+                <button class="modal-btn" onclick="calculateSafeVolumeModal()" style="background:#252a32; margin-bottom:8px;">محاسبه حجم ایمن</button>
                 <button onclick="applyVolumeToMainForm()" style="width:100%; background:#16a34a; color:white; border:none; border-radius:6px; padding:0.7rem; font-weight:600; cursor:pointer;">✅ کپی حجم به فرم اصلی</button>
             </div>
         </div>
@@ -478,31 +480,6 @@
         return symbolMap[originalSymbol] || originalSymbol;
     }
 
-    // ====================== Theme Management ======================
-    let currentMode = 'light';
-
-    function applyTheme(mode) {
-        if (mode === 'dark') {
-            document.body.classList.add('dark');
-            currentMode = 'dark';
-            document.getElementById('theme-icon').textContent = '☀️';
-        } else {
-            document.body.classList.remove('dark');
-            currentMode = 'light';
-            document.getElementById('theme-icon').textContent = '🌙';
-        }
-        localStorage.setItem('apex-theme', mode);
-    }
-
-    function toggleTheme() {
-        const newMode = currentMode === 'light' ? 'dark' : 'light';
-        applyTheme(newMode);
-        const activeSymbolBtn = document.querySelector('#symbol-selector .symbol-btn.active');
-        if (activeSymbolBtn) {
-            loadBitycleChart(activeSymbolBtn.dataset.symbol);
-        }
-    }
-
     // ====================== Bitycle Widget ======================
     let currentBitycleSymbol = 'US30';
 
@@ -526,7 +503,7 @@
             id: "bitycle-ac-widget",
             type: "ac",
             symbol: widgetSymbol,
-            mode: currentMode
+            mode: 'dark'
         };
         script.innerHTML = JSON.stringify(config);
         widgetContainer.appendChild(script);
@@ -1058,9 +1035,6 @@
 
     // ====================== Initialize - نسخه کامل ======================
     document.addEventListener('DOMContentLoaded', () => {
-        // تم
-        const savedTheme = localStorage.getItem('apex-theme') || 'light';
-        applyTheme(savedTheme);
 
         // اتصال وب‌سوکت قیمت برای همه نمادها
         {% for item in price_list %}
