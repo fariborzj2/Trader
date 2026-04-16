@@ -347,960 +347,973 @@
         </div>
 
         <!-- Edit SL/TP Modal -->
-<div id="edit-modal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h3>ویرایش استاپ لاس و تیک پروفیت</h3>
-            <button class="modal-close" onclick="closeEditModal()">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-            </button>
-        </div>
-        <div class="modal-body">
-            <input type="hidden" id="edit-pos-id">
-            <div class="modal-form-row">
-                <label>استاپ لاس (SL)</label>
-                <input type="number" id="modal-sl" step="0.00001" class="modal-input" placeholder="مثلاً 1.08500">
-            </div>
-            <div class="modal-form-row">
-                <label>تیک پروفیت (TP)</label>
-                <input type="number" id="modal-tp" step="0.00001" class="modal-input" placeholder="مثلاً 1.09500">
-            </div>
-            <div class="modal-actions">
-                <button class="modal-btn primary-btn" onclick="saveEditPosition()">ذخیره تغییرات</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-        <!-- Risk Expert Modal -->
-<div id="risk-modal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h3>
-                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 20V10M18 20V4M6 20v-4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                اکسپرت مدیریت سرمایه
-            </h3>
-            <button class="modal-close" onclick="closeRiskModal()">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-            </button>
-        </div>
-        <div class="modal-body">
-            <div class="modal-form-row">
-                <label>ریسک درصد (%)</label>
-                <input type="number" id="modal-risk-percent" class="modal-input" value="1" step="0.1" min="0.1" max="5">
-            </div>
-            <div class="modal-form-row">
-                <label>استاپ لاس (SL)</label>
-                <input type="number" id="modal-sl-input" class="modal-input" step="0.00001" placeholder="مثلاً 1.08500">
-            </div>
-            <div id="modal-risk-info" class="modal-info-box">ریسک: — $</div>
-            <div class="modal-actions modal-actions-stack">
-                <button class="modal-btn secondary-btn" onclick="calculateSafeVolumeModal()">محاسبه حجم ایمن</button>
-                <button class="modal-btn primary-btn" onclick="applyVolumeToMainForm()">
-                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                    کپی حجم به فرم اصلی
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-        <!-- Fixed & Organized Pending Order Modal -->
-<div id="pending-modal" class="modal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h3>
-                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 8v4l3 3M3 12a9 9 0 1118 0 9 9 0 01-18 0z"/></svg>
-                ثبت اوردر پندینگ
-            </h3>
-            <button class="modal-close" onclick="closePendingModal()">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-            </button>
-        </div>
-        <div class="modal-body">
-            <form id="pending-form" class="modal-form">
-                {% csrf_token %}
-                <div class="modal-form-grid">
-                    <div class="modal-form-row">
-                        <label>نماد</label>
-                        <select name="symbol" id="pending-symbol" class="modal-input">
-                            {% for item in price_list %}
-                                <option value="{{ item.symbol }}">{{ item.symbol }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="modal-form-row">
-                        <label>نوع اوردر</label>
-                        <select name="order_type" class="modal-input">
-                            <option value="buy_limit">Buy Limit</option>
-                            <option value="sell_limit">Sell Limit</option>
-                            <option value="buy_stop">Buy Stop</option>
-                            <option value="sell_stop">Sell Stop</option>
-                        </select>
-                    </div>
-                    <div class="modal-form-row">
-                        <label>حجم</label>
-                        <input type="number" name="volume" id="pending-volume" class="modal-input" step="0.01" min="0.01" required>
-                    </div>
-                    <div class="modal-form-row">
-                        <label>قیمت فعال‌سازی</label>
-                        <input type="number" name="entry_price" id="pending-entry" class="modal-input" step="0.00001" required>
-                    </div>
+        <div id="edit-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>ویرایش استاپ لاس و تیک پروفیت</h3>
+                    <button class="modal-close" onclick="closeEditModal()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="edit-pos-id">
                     <div class="modal-form-row">
                         <label>استاپ لاس (SL)</label>
-                        <input type="number" name="stop_loss" class="modal-input" step="0.00001">
+                        <input type="number" id="modal-sl" step="0.00001" class="modal-input" placeholder="مثلاً 1.08500">
                     </div>
                     <div class="modal-form-row">
                         <label>تیک پروفیت (TP)</label>
-                        <input type="number" name="take_profit" class="modal-input" step="0.00001">
+                        <input type="number" id="modal-tp" step="0.00001" class="modal-input" placeholder="مثلاً 1.09500">
+                    </div>
+                    <div class="modal-actions">
+                        <button class="modal-btn primary-btn" onclick="saveEditPosition()">ذخیره تغییرات</button>
                     </div>
                 </div>
-                <div class="modal-actions">
-                    <button type="button" class="modal-btn primary-btn" onclick="createPendingOrder()">ثبت اوردر پندینگ</button>
+            </div>
+        </div>
+
+        <!-- Risk Expert Modal -->
+        <div id="risk-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>
+                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 20V10M18 20V4M6 20v-4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        اکسپرت مدیریت سرمایه
+                    </h3>
+                    <button class="modal-close" onclick="closeRiskModal()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
                 </div>
-            </form>
+                <div class="modal-body">
+                    <div class="modal-form-row">
+                        <label>ریسک درصد (%)</label>
+                        <input type="number" id="modal-risk-percent" class="modal-input" value="1" step="0.1" min="0.1" max="5">
+                    </div>
+                    <div class="modal-form-row">
+                        <label>استاپ لاس (SL)</label>
+                        <input type="number" id="modal-sl-input" class="modal-input" step="0.00001" placeholder="مثلاً 1.08500">
+                    </div>
+                    <div id="modal-risk-info" class="modal-info-box">ریسک: — $</div>
+                    <div class="modal-actions modal-actions-stack">
+                        <button class="modal-btn secondary-btn" onclick="calculateSafeVolumeModal()">محاسبه حجم ایمن</button>
+                        <button class="modal-btn primary-btn" onclick="applyVolumeToMainForm()">
+                            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            کپی حجم به فرم اصلی
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Fixed & Organized Pending Order Modal -->
+        <div id="pending-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 8v4l3 3M3 12a9 9 0 1118 0 9 9 0 01-18 0z"/></svg>
+                        ثبت اوردر پندینگ
+                    </h3>
+                    <button class="modal-close" onclick="closePendingModal()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="pending-form" class="modal-form">
+                        {% csrf_token %}
+                        <div class="modal-form-grid">
+
+                            <div class="modal-form-row">
+                                <label>نماد</label>
+                                <select name="symbol" id="pending-symbol" class="modal-input">
+                                    {% for item in price_list %}
+                                        <option value="{{ item.symbol }}">{{ item.symbol }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="modal-form-row">
+                                <label>نوع اوردر</label>
+                                <select name="order_type" class="modal-input">
+                                    <option value="buy_limit">Buy Limit</option>
+                                    <option value="sell_limit">Sell Limit</option>
+                                    <option value="buy_stop">Buy Stop</option>
+                                    <option value="sell_stop">Sell Stop</option>
+                                </select>
+                            </div>
+
+                            <div class="grop-form">
+                                <div class="modal-form-row">
+                                    <label>حجم</label>
+                                    <input type="number" name="volume" id="pending-volume" class="modal-input" step="0.01" min="0.01" required>
+                                </div>
+
+                                <div class="modal-form-row">
+                                    <label>قیمت فعال‌سازی</label>
+                                    <input type="number" name="entry_price" id="pending-entry" class="modal-input" step="0.00001" required>
+                                </div>
+                            </div>
+                            
+
+                            <div class="grop-form">
+                                <div class="modal-form-row">
+                                    <label>استاپ لاس (SL)</label>
+                                    <input type="number" name="stop_loss" class="modal-input" step="0.00001">
+                                </div>
+
+                                <div class="modal-form-row">
+                                    <label>تیک پروفیت (TP)</label>
+                                    <input type="number" name="take_profit" class="modal-input" step="0.00001">
+                                </div>
+                            </div>
+                            
+
+                        </div>
+                        <div class="modal-actions">
+                            <button type="button" class="modal-btn primary-btn" onclick="createPendingOrder()">ثبت اوردر پندینگ</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
-</div>
-    </div>
 
-<script>
-    // ====================== WebSocket Helper with Auto-Reconnect ======================
-    function createReconnectingWebSocket(url, onMessageCallback, reconnectInterval = 1500) {
-        let ws = null;
-        let reconnectTimer = null;
+    <script>
+        // ====================== WebSocket Helper with Auto-Reconnect ======================
+        function createReconnectingWebSocket(url, onMessageCallback, reconnectInterval = 1500) {
+            let ws = null;
+            let reconnectTimer = null;
 
-        function connect() {
-            ws = new WebSocket(url);
-            
-            ws.onopen = () => {
-                console.log(` WebSocket متصل شد: ${url}`);
-                if (reconnectTimer) clearTimeout(reconnectTimer);
-            };
+            function connect() {
+                ws = new WebSocket(url);
+                
+                ws.onopen = () => {
+                    console.log(` WebSocket متصل شد: ${url}`);
+                    if (reconnectTimer) clearTimeout(reconnectTimer);
+                };
 
-            ws.onmessage = (event) => {
-                const data = JSON.parse(event.data);
-                onMessageCallback(data);
-            };
+                ws.onmessage = (event) => {
+                    const data = JSON.parse(event.data);
+                    onMessageCallback(data);
+                };
 
-            ws.onclose = () => {
-                console.log(` WebSocket قطع شد: ${url} → تلاش برای اتصال مجدد...`);
-                reconnectTimer = setTimeout(() => connect(), reconnectInterval);
-            };
+                ws.onclose = () => {
+                    console.log(` WebSocket قطع شد: ${url} → تلاش برای اتصال مجدد...`);
+                    reconnectTimer = setTimeout(() => connect(), reconnectInterval);
+                };
 
-            ws.onerror = (err) => console.error(`WebSocket خطا: ${url}`, err);
-        }
-
-        connect();
-        return ws;
-    }
-
-    // ====================== Mapping نمادها برای Bitycle ======================
-    const symbolMap = {
-        'FXCM_US30': 'US30',
-        'XAU_USD': 'XAUUSD',
-        'FXCM_EURUSD': 'EURUSD',
-        'FXCM_AUDUSD': 'AUDUSD',
-        'FXCM_NZDUSD': 'NZDUSD',
-        'FXCM_USDJPY': 'USDJPY',
-        'NAS100_USD': 'NAS100',
-        'FXCM_USOIL': 'USOIL',
-        'ETHUSDT': 'ETHUSDT'
-    };
-
-    function getBitycleSymbol(originalSymbol) {
-        return symbolMap[originalSymbol] || originalSymbol;
-    }
-
-    // ====================== Bitycle Widget ======================
-    let currentBitycleSymbol = 'US30';
-
-    function loadBitycleChart(symbol) {
-        if (!symbol) return;
-
-        const widgetSymbol = getBitycleSymbol(symbol);
-        currentBitycleSymbol = widgetSymbol;
-
-        // آپدیت چارت
-        const widgetContainer = document.getElementById('bitycle-ac-widget');
-        widgetContainer.innerHTML = '';
-
-        const script = document.createElement('script');
-        script.type = 'text/javascript';
-        script.src = 'https://widget.bitycle.com/static/script/v1/script.js';
-        script.async = true;
-        script.id = 'bitycle-script';
-
-        const config = {
-            id: "bitycle-ac-widget",
-            type: "ac",
-            symbol: widgetSymbol,
-            mode: 'dark'
-        };
-        script.innerHTML = JSON.stringify(config);
-        widgetContainer.appendChild(script);
-
-        // فعال کردن دکمه بالای چارت
-        document.querySelectorAll('#symbol-selector .symbol-btn').forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.symbol === symbol);
-        });
-
-        // آپدیت select فرم معامله (دو طرفه کردن)
-        const tradeSelect = document.getElementById('trade-symbol');
-        if (tradeSelect) {
-            tradeSelect.value = symbol;
-        }
-
-        console.log(` چارت تغییر کرد به: ${symbol} | ویجت: ${widgetSymbol}`);
-    }
-    // ====================== Tab Switching (Desktop) ======================
-    function openTab(tabId) {
-        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-        document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-        const tab = document.getElementById(tabId);
-        if (tab) tab.classList.add('active');
-        if (event && event.target) event.target.classList.add('active');
-    }
-
-    // ====================== Mobile Modal Functions ======================
-    function openMobileModal(tabId) {
-        document.querySelectorAll('.mobile-tab').forEach(t => t.classList.remove('active'));
-        const activeTab = Array.from(document.querySelectorAll('.mobile-tab')).find(tab => 
-            tab.getAttribute('onclick').includes(`'${tabId}'`)
-        );
-        if (activeTab) activeTab.classList.add('active');
-
-        const desktopContent = document.getElementById(tabId);
-        if (!desktopContent) return;
-
-        const titles = {
-            'account': 'حساب کاربری',
-            'open_positions': 'پوزیشن‌های باز',
-            'history': 'تاریخچه معاملات',
-            'pending_orders': 'اوردرهای پندینگ',
-            'symbol_settings': 'تنظیمات نمادها',
-            'analysis': 'آنالیز حساب'
-        };
-        document.getElementById('mobile-modal-title').innerHTML = titles[tabId] || 'جزئیات';
-
-        const modalBody = document.getElementById('mobile-modal-body');
-        modalBody.innerHTML = desktopContent.innerHTML;
-
-        document.getElementById('mobile-modal').style.display = 'flex';
-    }
-
-    function closeMobileModal() {
-        document.getElementById('mobile-modal').style.display = 'none';
-    }
-
-    // ====================== Price WebSockets ======================
-    const priceSockets = {};
-    function connectPriceWebSocket(symbol) {
-        if (priceSockets[symbol]) return;
-        priceSockets[symbol] = createReconnectingWebSocket(
-            `ws://${window.location.host}/ws/price/${symbol}/`,
-            (data) => {
-                if (data.type === 'price_update') {
-                    const priceEl = document.getElementById(`price-${data.symbol}`);
-                    if (priceEl) {
-                        const old = parseFloat(priceEl.textContent) || 0;
-                        const newP = parseFloat(data.price);
-                        priceEl.textContent = newP.toFixed(6);
-                        priceEl.classList.add(newP > old ? 'price-up' : 'price-down');
-                        setTimeout(() => priceEl.classList.remove('price-up', 'price-down'), 200);
-                    }
-                    const currentPrices = document.querySelectorAll(`#current-price-${data.symbol}`);
-                    currentPrices.forEach(el => el.textContent = data.price.toFixed(6));
-                    updateClientPL(data.symbol, data.price);
-                }
+                ws.onerror = (err) => console.error(`WebSocket خطا: ${url}`, err);
             }
-        );
-    }
 
-        function updateClientPL(symbol, current_price) {
-            const rows = document.querySelectorAll(`tr[data-symbol="${symbol}"]`);
-            let total_unrealized = 0;
+            connect();
+            return ws;
+        }
 
-            rows.forEach(row => {
-                const type = row.dataset.type;
-                const volume = parseFloat(row.dataset.volume);
-                const open_price = parseFloat(row.dataset.openPrice);
+        // ====================== Mapping نمادها برای Bitycle ======================
+        const symbolMap = {
+            'FXCM_US30': 'US30',
+            'XAU_USD': 'XAUUSD',
+            'FXCM_EURUSD': 'EURUSD',
+            'FXCM_AUDUSD': 'AUDUSD',
+            'FXCM_NZDUSD': 'NZDUSD',
+            'FXCM_USDJPY': 'USDJPY',
+            'NAS100_USD': 'NAS100',
+            'FXCM_USOIL': 'USOIL',
+            'ETHUSDT': 'ETHUSDT'
+        };
 
-                let diff = current_price - open_price;
-                if (type === 'sell') diff = -diff;
+        function getBitycleSymbol(originalSymbol) {
+            return symbolMap[originalSymbol] || originalSymbol;
+        }
 
-                // استفاده از تابع جدید (دقیقاً مثل بک‌اند)
-                const multiplier = getPlMultiplierPerLot(symbol);
-                let pl = diff * multiplier * volume;
+        // ====================== Bitycle Widget ======================
+        let currentBitycleSymbol = 'US30';
 
-                const plEl = row.querySelector('[id^="pl-"]');
-                if (plEl) {
-                    plEl.textContent = pl.toFixed(2);
-                    plEl.classList.remove('price-up', 'price-down');
-                    if (pl > 0) plEl.classList.add('price-up');
-                    else if (pl < 0) plEl.classList.add('price-down');
-                }
+        function loadBitycleChart(symbol) {
+            if (!symbol) return;
 
-                total_unrealized += pl;
+            const widgetSymbol = getBitycleSymbol(symbol);
+            currentBitycleSymbol = widgetSymbol;
+
+            // آپدیت چارت
+            const widgetContainer = document.getElementById('bitycle-ac-widget');
+            widgetContainer.innerHTML = '';
+
+            const script = document.createElement('script');
+            script.type = 'text/javascript';
+            script.src = 'https://widget.bitycle.com/static/script/v1/script.js';
+            script.async = true;
+            script.id = 'bitycle-script';
+
+            const config = {
+                id: "bitycle-ac-widget",
+                type: "ac",
+                symbol: widgetSymbol,
+                mode: 'dark'
+            };
+            script.innerHTML = JSON.stringify(config);
+            widgetContainer.appendChild(script);
+
+            // فعال کردن دکمه بالای چارت
+            document.querySelectorAll('#symbol-selector .symbol-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.symbol === symbol);
             });
 
-            // آپدیت اکویتی زنده
-            const balanceEl = document.getElementById('balance-value');
-            if (balanceEl) {
-                const balance = parseFloat(balanceEl.textContent.replace(/[$,]/g, '').trim());
-                const equityEl = document.getElementById('equity-value');
-                if (equityEl) {
-                    equityEl.textContent = (balance + total_unrealized).toFixed(2) + ' $';
+            // آپدیت select فرم معامله (دو طرفه کردن)
+            const tradeSelect = document.getElementById('trade-symbol');
+            if (tradeSelect) {
+                tradeSelect.value = symbol;
+            }
+
+            console.log(` چارت تغییر کرد به: ${symbol} | ویجت: ${widgetSymbol}`);
+        }
+        // ====================== Tab Switching (Desktop) ======================
+        function openTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            const tab = document.getElementById(tabId);
+            if (tab) tab.classList.add('active');
+            if (event && event.target) event.target.classList.add('active');
+        }
+
+        // ====================== Mobile Modal Functions ======================
+        function openMobileModal(tabId) {
+            document.querySelectorAll('.mobile-tab').forEach(t => t.classList.remove('active'));
+            const activeTab = Array.from(document.querySelectorAll('.mobile-tab')).find(tab => 
+                tab.getAttribute('onclick').includes(`'${tabId}'`)
+            );
+            if (activeTab) activeTab.classList.add('active');
+
+            const desktopContent = document.getElementById(tabId);
+            if (!desktopContent) return;
+
+            const titles = {
+                'account': 'حساب کاربری',
+                'open_positions': 'پوزیشن‌های باز',
+                'history': 'تاریخچه معاملات',
+                'pending_orders': 'اوردرهای پندینگ',
+                'symbol_settings': 'تنظیمات نمادها',
+                'analysis': 'آنالیز حساب'
+            };
+            document.getElementById('mobile-modal-title').innerHTML = titles[tabId] || 'جزئیات';
+
+            const modalBody = document.getElementById('mobile-modal-body');
+            modalBody.innerHTML = desktopContent.innerHTML;
+
+            document.getElementById('mobile-modal').style.display = 'flex';
+        }
+
+        function closeMobileModal() {
+            document.getElementById('mobile-modal').style.display = 'none';
+        }
+
+        // ====================== Price WebSockets ======================
+        const priceSockets = {};
+        function connectPriceWebSocket(symbol) {
+            if (priceSockets[symbol]) return;
+            priceSockets[symbol] = createReconnectingWebSocket(
+                `ws://${window.location.host}/ws/price/${symbol}/`,
+                (data) => {
+                    if (data.type === 'price_update') {
+                        const priceEl = document.getElementById(`price-${data.symbol}`);
+                        if (priceEl) {
+                            const old = parseFloat(priceEl.textContent) || 0;
+                            const newP = parseFloat(data.price);
+                            priceEl.textContent = newP.toFixed(6);
+                            priceEl.classList.add(newP > old ? 'price-up' : 'price-down');
+                            setTimeout(() => priceEl.classList.remove('price-up', 'price-down'), 200);
+                        }
+                        const currentPrices = document.querySelectorAll(`#current-price-${data.symbol}`);
+                        currentPrices.forEach(el => el.textContent = data.price.toFixed(6));
+                        updateClientPL(data.symbol, data.price);
+                    }
                 }
-            }
+            );
         }
 
-    // ====================== Account & Positions WebSockets ======================
-    const userId = '{{ request.user.id }}';
+            function updateClientPL(symbol, current_price) {
+                const rows = document.querySelectorAll(`tr[data-symbol="${symbol}"]`);
+                let total_unrealized = 0;
 
-    const accountWs = createReconnectingWebSocket(
-        `ws://${window.location.host}/ws/account/${userId}/`,
-        (data) => {
-            if (data.type === 'account_update') {
-                document.getElementById('equity-value').textContent = data.equity.toFixed(2) + ' $';
-                document.getElementById('balance-value').textContent = data.balance.toFixed(2) + ' $';
-                document.getElementById('margin-used-value').textContent = data.margin_used.toFixed(2) + ' $';
-            }
-        }
-    );
+                rows.forEach(row => {
+                    const type = row.dataset.type;
+                    const volume = parseFloat(row.dataset.volume);
+                    const open_price = parseFloat(row.dataset.openPrice);
 
-    const positionsWs = createReconnectingWebSocket(
-        `ws://${window.location.host}/ws/positions/${userId}/`,
-        (data) => {
-            if (data.type === 'positions_update') {
-                document.getElementById('equity-value').textContent = data.equity.toFixed(2) + ' $';
-                for (const [posId, pl] of Object.entries(data.pl_data || {})) {
-                    const plEl = document.getElementById(`pl-${posId}`);
+                    let diff = current_price - open_price;
+                    if (type === 'sell') diff = -diff;
+
+                    // استفاده از تابع جدید (دقیقاً مثل بک‌اند)
+                    const multiplier = getPlMultiplierPerLot(symbol);
+                    let pl = diff * multiplier * volume;
+
+                    const plEl = row.querySelector('[id^="pl-"]');
                     if (plEl) {
-                        plEl.textContent = Number(pl).toFixed(2);
+                        plEl.textContent = pl.toFixed(2);
                         plEl.classList.remove('price-up', 'price-down');
                         if (pl > 0) plEl.classList.add('price-up');
                         else if (pl < 0) plEl.classList.add('price-down');
                     }
+
+                    total_unrealized += pl;
+                });
+
+                // آپدیت اکویتی زنده
+                const balanceEl = document.getElementById('balance-value');
+                if (balanceEl) {
+                    const balance = parseFloat(balanceEl.textContent.replace(/[$,]/g, '').trim());
+                    const equityEl = document.getElementById('equity-value');
+                    if (equityEl) {
+                        equityEl.textContent = (balance + total_unrealized).toFixed(2) + ' $';
+                    }
                 }
-            } else if (data.type === 'position_closed') {
-                const row = document.querySelector(`#pl-${data.pos_id}`)?.closest('tr');
-                if (row) row.remove();
             }
-        }
-    );
 
-    // ====================== Trade Functions ======================
-    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-    let isSubmitting = false;
+        // ====================== Account & Positions WebSockets ======================
+        const userId = '{{ request.user.id }}';
 
-    async function setTradeType(type) {
-        if (isSubmitting) return;
-        isSubmitting = true;
-
-        const buyBtn = document.querySelector('.trade-btn.buy');
-        const sellBtn = document.querySelector('.trade-btn.sell');
-        buyBtn.disabled = sellBtn.disabled = true;
-
-        document.getElementById('trade-type').value = type;
-        const form = document.querySelector('.trade-form');
-        const formData = new FormData(form);
-
-        try {
-            const res = await fetch('{% url "new_order" %}', {
-                method: 'POST',
-                body: formData,
-                headers: { 'X-Requested-With': 'XMLHttpRequest', 'X-CSRFToken': csrfToken }
-            });
-            const data = await res.json();
-            const msgDiv = document.getElementById('trade-messages');
-            msgDiv.innerHTML = '';
-            if (data.status === 'success') {
-                msgDiv.innerHTML = '<p style="color: green;">معامله با موفقیت باز شد</p>';
-                const noPosRow = document.getElementById('no-positions-row');
-                if (noPosRow) noPosRow.remove();
-                const table = document.querySelector('#open_positions tbody');
-                const row = document.createElement('tr');
-                row.dataset.symbol = data.pos.symbol;
-                row.dataset.type = data.pos.type;
-                row.dataset.volume = data.pos.volume;
-                row.dataset.openPrice = data.pos.open_price;
-                row.innerHTML = `
-                    <td>${data.pos.id}</td>
-                    <td>${data.pos.symbol}</td>
-                    <td>${data.pos.type}</td>
-                    <td class="volume-cell">${data.pos.volume.toFixed(5)}</td>
-                    <td>${data.pos.open_price.toFixed(6)}</td>
-                    <td id="current-price-${data.pos.symbol}"></td>
-                    <td id="pl-${data.pos.id}">${data.pos.unrealized_pl.toFixed(2)}</td>
-                    <td>${data.pos.stop_loss ? parseFloat(data.pos.stop_loss).toFixed(5) : '—'}</td>
-                    <td>${data.pos.take_profit ? parseFloat(data.pos.take_profit).toFixed(5) : '—'}</td>
-                    <td>${data.pos.open_time}</td>
-                    <td>
-                        <div class="operations">
-                            <button class="partial-btn" onclick="partialClosePosition(${data.pos.id}, 0.25)">۲۵٪</button>
-                            <button class="partial-btn" onclick="partialClosePosition(${data.pos.id}, 0.5)">۵۰٪</button>
-                            <button class="partial-btn" onclick="partialClosePosition(${data.pos.id}, 0.75)">۷۵٪</button>
-                            <button class="close-btn" onclick="closePosition(${data.pos.id})">۱۰۰٪</button>
-                            <button class="edit-btn" onclick="openEditModal(${data.pos.id}, '${data.pos.stop_loss || ''}', '${data.pos.take_profit || ''}')">ویرایش</button>
-                        </div>
-                    </td>
-                `;
-                table.appendChild(row);
-                document.getElementById('equity-value').textContent = data.equity.toFixed(2) + ' $';
-                document.getElementById('balance-value').textContent = data.balance.toFixed(2) + ' $';
-                document.getElementById('margin-used-value').textContent = data.margin_used.toFixed(2) + ' $';
-            } else {
-                msgDiv.innerHTML = `<p style="color: red;">${data.message}</p>`;
+        const accountWs = createReconnectingWebSocket(
+            `ws://${window.location.host}/ws/account/${userId}/`,
+            (data) => {
+                if (data.type === 'account_update') {
+                    document.getElementById('equity-value').textContent = data.equity.toFixed(2) + ' $';
+                    document.getElementById('balance-value').textContent = data.balance.toFixed(2) + ' $';
+                    document.getElementById('margin-used-value').textContent = data.margin_used.toFixed(2) + ' $';
+                }
             }
-        } catch (err) {
-            console.error(err);
-        } finally {
-            isSubmitting = false;
-            buyBtn.disabled = sellBtn.disabled = false;
-        }
-    }
+        );
 
-    // ====================== Partial Close ======================
-    async function partialClosePosition(posId, percent) {
-        try {
-            const row = document.querySelector(`#pl-${posId}`).closest('tr');
-            if (!row) return;
-            const totalVolume = parseFloat(row.dataset.volume);
-            const closeVolume = (totalVolume * percent).toFixed(5);
+        const positionsWs = createReconnectingWebSocket(
+            `ws://${window.location.host}/ws/positions/${userId}/`,
+            (data) => {
+                if (data.type === 'positions_update') {
+                    document.getElementById('equity-value').textContent = data.equity.toFixed(2) + ' $';
+                    for (const [posId, pl] of Object.entries(data.pl_data || {})) {
+                        const plEl = document.getElementById(`pl-${posId}`);
+                        if (plEl) {
+                            plEl.textContent = Number(pl).toFixed(2);
+                            plEl.classList.remove('price-up', 'price-down');
+                            if (pl > 0) plEl.classList.add('price-up');
+                            else if (pl < 0) plEl.classList.add('price-down');
+                        }
+                    }
+                } else if (data.type === 'position_closed') {
+                    const row = document.querySelector(`#pl-${data.pos_id}`)?.closest('tr');
+                    if (row) row.remove();
+                }
+            }
+        );
 
-            const res = await fetch(`/partial_close/${posId}/`, {
-                method: 'POST',
-                headers: { 'X-Requested-With': 'XMLHttpRequest', 'X-CSRFToken': csrfToken },
-                body: new URLSearchParams({ volume: closeVolume })
-            });
+        // ====================== Trade Functions ======================
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+        let isSubmitting = false;
 
-            const data = await res.json();
-            const msgDiv = document.getElementById('trade-messages');
-            msgDiv.innerHTML = data.status === 'success' 
-                ? `<p style="color: green;">${data.message}</p>` 
-                : `<p style="color: red;">${data.message}</p>`;
+        async function setTradeType(type) {
+            if (isSubmitting) return;
+            isSubmitting = true;
 
-            if (data.status === 'success') {
-                if (percent >= 1 || parseFloat(closeVolume) >= totalVolume) {
-                    row.remove();
+            const buyBtn = document.querySelector('.trade-btn.buy');
+            const sellBtn = document.querySelector('.trade-btn.sell');
+            buyBtn.disabled = sellBtn.disabled = true;
+
+            document.getElementById('trade-type').value = type;
+            const form = document.querySelector('.trade-form');
+            const formData = new FormData(form);
+
+            try {
+                const res = await fetch('{% url "new_order" %}', {
+                    method: 'POST',
+                    body: formData,
+                    headers: { 'X-Requested-With': 'XMLHttpRequest', 'X-CSRFToken': csrfToken }
+                });
+                const data = await res.json();
+                const msgDiv = document.getElementById('trade-messages');
+                msgDiv.innerHTML = '';
+                if (data.status === 'success') {
+                    msgDiv.innerHTML = '<p style="color: green;">معامله با موفقیت باز شد</p>';
+                    const noPosRow = document.getElementById('no-positions-row');
+                    if (noPosRow) noPosRow.remove();
+                    const table = document.querySelector('#open_positions tbody');
+                    const row = document.createElement('tr');
+                    row.dataset.symbol = data.pos.symbol;
+                    row.dataset.type = data.pos.type;
+                    row.dataset.volume = data.pos.volume;
+                    row.dataset.openPrice = data.pos.open_price;
+                    row.innerHTML = `
+                        <td>${data.pos.id}</td>
+                        <td>${data.pos.symbol}</td>
+                        <td>${data.pos.type}</td>
+                        <td class="volume-cell">${data.pos.volume.toFixed(5)}</td>
+                        <td>${data.pos.open_price.toFixed(6)}</td>
+                        <td id="current-price-${data.pos.symbol}"></td>
+                        <td id="pl-${data.pos.id}">${data.pos.unrealized_pl.toFixed(2)}</td>
+                        <td>${data.pos.stop_loss ? parseFloat(data.pos.stop_loss).toFixed(5) : '—'}</td>
+                        <td>${data.pos.take_profit ? parseFloat(data.pos.take_profit).toFixed(5) : '—'}</td>
+                        <td>${data.pos.open_time}</td>
+                        <td>
+                            <div class="operations">
+                                <button class="partial-btn" onclick="partialClosePosition(${data.pos.id}, 0.25)">۲۵٪</button>
+                                <button class="partial-btn" onclick="partialClosePosition(${data.pos.id}, 0.5)">۵۰٪</button>
+                                <button class="partial-btn" onclick="partialClosePosition(${data.pos.id}, 0.75)">۷۵٪</button>
+                                <button class="close-btn" onclick="closePosition(${data.pos.id})">۱۰۰٪</button>
+                                <button class="edit-btn" onclick="openEditModal(${data.pos.id}, '${data.pos.stop_loss || ''}', '${data.pos.take_profit || ''}')">ویرایش</button>
+                            </div>
+                        </td>
+                    `;
+                    table.appendChild(row);
+                    document.getElementById('equity-value').textContent = data.equity.toFixed(2) + ' $';
+                    document.getElementById('balance-value').textContent = data.balance.toFixed(2) + ' $';
+                    document.getElementById('margin-used-value').textContent = data.margin_used.toFixed(2) + ' $';
                 } else {
-                    const newVolume = (totalVolume * (1 - percent)).toFixed(5);
-                    row.dataset.volume = newVolume;
-                    row.querySelector('.volume-cell').textContent = newVolume;
+                    msgDiv.innerHTML = `<p style="color: red;">${data.message}</p>`;
                 }
-                if (data.equity !== undefined) document.getElementById('equity-value').textContent = parseFloat(data.equity).toFixed(2) + ' $';
-                if (data.balance !== undefined) document.getElementById('balance-value').textContent = parseFloat(data.balance).toFixed(2) + ' $';
+            } catch (err) {
+                console.error(err);
+            } finally {
+                isSubmitting = false;
+                buyBtn.disabled = sellBtn.disabled = false;
             }
-        } catch (err) {
-            console.error(err);
         }
-    }
 
-    // ====================== Full Close ======================
-    async function closePosition(posId) {
-        const btn = event.currentTarget;
-        if (btn.disabled) return;
-        btn.disabled = true;
-        btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>';
+        // ====================== Partial Close ======================
+        async function partialClosePosition(posId, percent) {
+            try {
+                const row = document.querySelector(`#pl-${posId}`).closest('tr');
+                if (!row) return;
+                const totalVolume = parseFloat(row.dataset.volume);
+                const closeVolume = (totalVolume * percent).toFixed(5);
 
-        try {
-            const res = await fetch(`/close_position/${posId}/`, {
-                method: 'POST',
-                headers: { 'X-Requested-With': 'XMLHttpRequest', 'X-CSRFToken': csrfToken }
-            });
-            const data = await res.json();
-            const msgDiv = document.getElementById('trade-messages');
-            if (data.status === 'success') {
-                msgDiv.innerHTML = '<p style="color: green;"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg> معامله بسته شد</p>';
-                const row = document.querySelector(`#pl-${data.pos_id}`)?.closest('tr');
-                if (row) row.remove();
+                const res = await fetch(`/partial_close/${posId}/`, {
+                    method: 'POST',
+                    headers: { 'X-Requested-With': 'XMLHttpRequest', 'X-CSRFToken': csrfToken },
+                    body: new URLSearchParams({ volume: closeVolume })
+                });
 
-                const histTable = document.querySelector('#history tbody');
-                const histRow = document.createElement('tr');
-                histRow.className = data.hist.pl > 0 ? 'profit-row' : (data.hist.pl < 0 ? 'loss-row' : 'zero-row');
-                histRow.innerHTML = `
-                    <td>${data.hist.id}</td>
-                    <td>${data.hist.symbol}</td>
-                    <td>${data.hist.type}</td>
-                    <td>${data.hist.volume_closed ? parseFloat(data.hist.volume_closed).toFixed(5) : parseFloat(data.hist.volume).toFixed(5)}</td>
-                    <td>${data.hist.open_price.toFixed(6)}</td>
-                    <td>${data.hist.stop_loss ? parseFloat(data.hist.stop_loss).toFixed(5) : '—'}</td>
-                    <td>${data.hist.take_profit ? parseFloat(data.hist.take_profit).toFixed(5) : '—'}</td>
-                    <td>${data.hist.close_price.toFixed(6)}</td>
-                    <td class="${data.hist.pl > 0 ? 'pl-positive' : (data.hist.pl < 0 ? 'pl-negative' : 'pl-zero')}">${data.hist.pl.toFixed(2)}</td>
-                    <td>${data.hist.total_commission.toFixed(2)}</td>
-                    <td>${data.hist.open_time}</td>
-                    <td>${data.hist.close_time}</td>
-                `;
-                histTable.prepend(histRow);
+                const data = await res.json();
+                const msgDiv = document.getElementById('trade-messages');
+                msgDiv.innerHTML = data.status === 'success' 
+                    ? `<p style="color: green;">${data.message}</p>` 
+                    : `<p style="color: red;">${data.message}</p>`;
 
-                document.getElementById('equity-value').textContent = data.equity.toFixed(2) + ' $';
-                document.getElementById('balance-value').textContent = data.balance.toFixed(2) + ' $';
-                document.getElementById('margin-used-value').textContent = data.margin_used.toFixed(2) + ' $';
-
-                const openTable = document.querySelector('#open_positions tbody');
-                if (openTable.children.length === 0) {
-                    const noPosRow = document.createElement('tr');
-                    noPosRow.id = 'no-positions-row';
-                    noPosRow.innerHTML = '<td colspan="11">هیچ پوزیشنی باز نیست</td>';
-                    openTable.appendChild(noPosRow);
+                if (data.status === 'success') {
+                    if (percent >= 1 || parseFloat(closeVolume) >= totalVolume) {
+                        row.remove();
+                    } else {
+                        const newVolume = (totalVolume * (1 - percent)).toFixed(5);
+                        row.dataset.volume = newVolume;
+                        row.querySelector('.volume-cell').textContent = newVolume;
+                    }
+                    if (data.equity !== undefined) document.getElementById('equity-value').textContent = parseFloat(data.equity).toFixed(2) + ' $';
+                    if (data.balance !== undefined) document.getElementById('balance-value').textContent = parseFloat(data.balance).toFixed(2) + ' $';
                 }
-            } else {
-                msgDiv.innerHTML = `<p style="color: red;">${data.message || 'خطا'}</p>`;
+            } catch (err) {
+                console.error(err);
             }
-        } catch (err) {
-            console.error(err);
-        } finally {
-            btn.disabled = false;
-            btn.innerHTML = '۱۰۰٪';
         }
-    }
 
-    // ====================== Edit SL/TP ======================
-    function openEditModal(posId, currentSL, currentTP) {
-        document.getElementById('edit-pos-id').value = posId;
-        document.getElementById('modal-sl').value = currentSL || '';
-        document.getElementById('modal-tp').value = currentTP || '';
-        document.getElementById('edit-modal').style.display = 'flex';
-    }
+        // ====================== Full Close ======================
+        async function closePosition(posId) {
+            const btn = event.currentTarget;
+            if (btn.disabled) return;
+            btn.disabled = true;
+            btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>';
 
-    function closeEditModal() {
-        document.getElementById('edit-modal').style.display = 'none';
-    }
+            try {
+                const res = await fetch(`/close_position/${posId}/`, {
+                    method: 'POST',
+                    headers: { 'X-Requested-With': 'XMLHttpRequest', 'X-CSRFToken': csrfToken }
+                });
+                const data = await res.json();
+                const msgDiv = document.getElementById('trade-messages');
+                if (data.status === 'success') {
+                    msgDiv.innerHTML = '<p style="color: green;"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg> معامله بسته شد</p>';
+                    const row = document.querySelector(`#pl-${data.pos_id}`)?.closest('tr');
+                    if (row) row.remove();
 
-    async function saveEditPosition() {
-        const posId = document.getElementById('edit-pos-id').value;
-        const newSL = document.getElementById('modal-sl').value;
-        const newTP = document.getElementById('modal-tp').value;
+                    const histTable = document.querySelector('#history tbody');
+                    const histRow = document.createElement('tr');
+                    histRow.className = data.hist.pl > 0 ? 'profit-row' : (data.hist.pl < 0 ? 'loss-row' : 'zero-row');
+                    histRow.innerHTML = `
+                        <td>${data.hist.id}</td>
+                        <td>${data.hist.symbol}</td>
+                        <td>${data.hist.type}</td>
+                        <td>${data.hist.volume_closed ? parseFloat(data.hist.volume_closed).toFixed(5) : parseFloat(data.hist.volume).toFixed(5)}</td>
+                        <td>${data.hist.open_price.toFixed(6)}</td>
+                        <td>${data.hist.stop_loss ? parseFloat(data.hist.stop_loss).toFixed(5) : '—'}</td>
+                        <td>${data.hist.take_profit ? parseFloat(data.hist.take_profit).toFixed(5) : '—'}</td>
+                        <td>${data.hist.close_price.toFixed(6)}</td>
+                        <td class="${data.hist.pl > 0 ? 'pl-positive' : (data.hist.pl < 0 ? 'pl-negative' : 'pl-zero')}">${data.hist.pl.toFixed(2)}</td>
+                        <td>${data.hist.total_commission.toFixed(2)}</td>
+                        <td>${data.hist.open_time}</td>
+                        <td>${data.hist.close_time}</td>
+                    `;
+                    histTable.prepend(histRow);
 
-        try {
-            const res = await fetch(`/edit_position/${posId}/`, {
-                method: 'POST',
-                headers: { 'X-Requested-With': 'XMLHttpRequest', 'X-CSRFToken': csrfToken },
-                body: new URLSearchParams({ stop_loss: newSL, take_profit: newTP })
-            });
-            const data = await res.json();
-            const msgDiv = document.getElementById('trade-messages');
-            if (data.status === 'success') {
-                msgDiv.innerHTML = `<p style="color: green;">${data.message}</p>`;
-                closeEditModal();
-            } else {
-                msgDiv.innerHTML = `<p style="color: red;">${data.message}</p>`;
+                    document.getElementById('equity-value').textContent = data.equity.toFixed(2) + ' $';
+                    document.getElementById('balance-value').textContent = data.balance.toFixed(2) + ' $';
+                    document.getElementById('margin-used-value').textContent = data.margin_used.toFixed(2) + ' $';
+
+                    const openTable = document.querySelector('#open_positions tbody');
+                    if (openTable.children.length === 0) {
+                        const noPosRow = document.createElement('tr');
+                        noPosRow.id = 'no-positions-row';
+                        noPosRow.innerHTML = '<td colspan="11">هیچ پوزیشنی باز نیست</td>';
+                        openTable.appendChild(noPosRow);
+                    }
+                } else {
+                    msgDiv.innerHTML = `<p style="color: red;">${data.message || 'خطا'}</p>`;
+                }
+            } catch (err) {
+                console.error(err);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '۱۰۰٪';
             }
-        } catch (err) {
-            console.error(err);
         }
-    }
 
-          // ====================== PL Multiplier برای همه نمادها (نسخه نهایی و قوی) ======================
-    function getPlMultiplierPerLot(symbol) {
-    if (!symbol) return 1;
-    
-    const s = String(symbol).trim().toUpperCase();
-    
-    const multipliers = {
-        'FXCM_EURUSD': 100000,
-        'FXCM_AUDUSD': 100000,
-        'FXCM_NZDUSD': 100000,
-        'FXCM_USDJPY': 100000,
-        'FXCM_US30': 10,
-        'NAS100_USD': 1,
-        'FXCM_USOIL': 10,
-        'XAU_USD': 100,
-        'ETHUSDT': 1,
+        // ====================== Edit SL/TP ======================
+        function openEditModal(posId, currentSL, currentTP) {
+            document.getElementById('edit-pos-id').value = posId;
+            document.getElementById('modal-sl').value = currentSL || '';
+            document.getElementById('modal-tp').value = currentTP || '';
+            document.getElementById('edit-modal').style.display = 'flex';
+        }
+
+        function closeEditModal() {
+            document.getElementById('edit-modal').style.display = 'none';
+        }
+
+        async function saveEditPosition() {
+            const posId = document.getElementById('edit-pos-id').value;
+            const newSL = document.getElementById('modal-sl').value;
+            const newTP = document.getElementById('modal-tp').value;
+
+            try {
+                const res = await fetch(`/edit_position/${posId}/`, {
+                    method: 'POST',
+                    headers: { 'X-Requested-With': 'XMLHttpRequest', 'X-CSRFToken': csrfToken },
+                    body: new URLSearchParams({ stop_loss: newSL, take_profit: newTP })
+                });
+                const data = await res.json();
+                const msgDiv = document.getElementById('trade-messages');
+                if (data.status === 'success') {
+                    msgDiv.innerHTML = `<p style="color: green;">${data.message}</p>`;
+                    closeEditModal();
+                } else {
+                    msgDiv.innerHTML = `<p style="color: red;">${data.message}</p>`;
+                }
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+            // ====================== PL Multiplier برای همه نمادها (نسخه نهایی و قوی) ======================
+        function getPlMultiplierPerLot(symbol) {
+        if (!symbol) return 1;
         
-        // alias بدون پیشوند (برای ایمنی بیشتر)
-        'EURUSD': 100000,
-        'AUDUSD': 100000,
-        'NZDUSD': 100000,
-        'USDJPY': 100000,
-        'US30': 10,
-        'NAS100': 1,
-        'USOIL': 10,
-        'XAUUSD': 100
-    };
-    
-    const mult = multipliers[s] || 1;
-    console.log(`[PL-MULT] ${symbol} → multiplier = ${mult}`);
-    return mult;
-}
-    function openRiskModal() {
-        document.getElementById('risk-modal').style.display = 'flex';
-        const mainSL = document.getElementById('sl-input').value;
-        if (mainSL) document.getElementById('modal-sl-input').value = mainSL;
-    }
-
-    function closeRiskModal() {
-        document.getElementById('risk-modal').style.display = 'none';
-    }
-
-    window.calculateSafeVolumeModal = function() {
-        const symbol = document.getElementById('trade-symbol').value;
-        const slInput = parseFloat(document.getElementById('modal-sl-input').value);
-        const riskPercent = parseFloat(document.getElementById('modal-risk-percent').value) || 1;
-        const balanceText = document.getElementById('balance-value').textContent;
-        const balance = parseFloat(balanceText.replace(/[$,]/g, '').trim());
-
-        if (!slInput || slInput <= 0) {
-            alert(' لطفاً استاپ لاس معتبر وارد کنید!');
-            return;
-        }
-        if (!balance || balance <= 0) {
-            alert(' بالانس خوانده نشد!');
-            return;
-        }
-
-        let currentPrice = 0;
-        const priceEl = document.getElementById(`price-${symbol}`);
-        if (priceEl) currentPrice = parseFloat(priceEl.textContent);
-
-        if (!currentPrice || currentPrice <= 0) {
-            alert(' قیمت فعلی نماد پیدا نشد. اول نماد رو انتخاب کن.');
-            return;
-        }
-
-        const slDistance = Math.abs(slInput - currentPrice);
-        const multiplier = getPlMultiplierPerLot(symbol);
-        const riskAmount = (balance * riskPercent) / 100;
-
-        let safeVolume = riskAmount / (slDistance * multiplier);
-        safeVolume = Math.max(0.01, parseFloat(safeVolume.toFixed(3)));
-
-        window.calculatedSafeVolume = safeVolume;
-
-        const riskInfo = document.getElementById('modal-risk-info');
-        riskInfo.innerHTML = `
-            <strong>ریسک:</strong> ${riskAmount.toFixed(2)}$ (${riskPercent}%)<br>
-            <strong>فاصله تا SL:</strong> ${slDistance.toFixed(5)}<br>
-            <strong>Multiplier:</strong> ${multiplier.toFixed(0)}<br>
-            <span style="color:#16a34a;font-size:1.1rem">
-                حجم پیشنهادی: <strong>${safeVolume}</strong> لات
-            </span>
-        `;
-    };
-
-    window.applyVolumeToMainForm = function() {
-        if (typeof window.calculatedSafeVolume === 'undefined') {
-            alert('ابتدا حجم را محاسبه کنید!');
-            return;
-        }
-        document.getElementById('volume-input').value = window.calculatedSafeVolume;
-        closeRiskModal();
-        alert(' حجم به فرم اصلی اعمال شد!');
-    };
-
-    // ====================== Pending Order Modal Functions ======================
-    function openPendingModal() {
-        document.getElementById('pending-modal').style.display = 'flex';
-    }
-
-    function closePendingModal() {
-        document.getElementById('pending-modal').style.display = 'none';
-    }
-
-    async function createPendingOrder() {
-        const form = document.getElementById('pending-form');
-        const formData = new FormData(form);
+        const s = String(symbol).trim().toUpperCase();
         
-        try {
-            const res = await fetch('{% url "create_pending_order" %}', {
-                method: 'POST',
-                body: formData,
-                headers: { 'X-Requested-With': 'XMLHttpRequest', 'X-CSRFToken': csrfToken }
-            });
-            const data = await res.json();
-
-            if (data.status === 'success') {
-                const tbody = document.querySelector('#pending-table tbody');
-                if (document.getElementById('no-pending-row')) tbody.innerHTML = '';
-
-                const row = document.createElement('tr');
-                row.id = `pending-row-${data.order_id}`;
-                row.innerHTML = `
-                    <td>${data.order_id}</td>
-                    <td>${formData.get('symbol')}</td>
-                    <td>${formData.get('order_type')}</td>
-                    <td>${parseFloat(formData.get('volume')).toFixed(2)}</td>
-                    <td>${parseFloat(formData.get('entry_price')).toFixed(5)}</td>
-                    <td>${formData.get('stop_loss') || '—'}</td>
-                    <td>${formData.get('take_profit') || '—'}</td>
-                    <td>همین الان</td>
-                    <td><button class="close-btn" onclick="cancelPendingOrder(${data.order_id})">لغو</button></td>
-                `;
-                tbody.appendChild(row);
-
-                form.reset();
-                closePendingModal();
-                alert('اوردر پندینگ با موفقیت ثبت شد');
-            } else {
-                alert(' ' + (data.message || 'خطا'));
-            }
-        } catch (e) {
-            console.error(e);
-        }
-    }
-
-    async function cancelPendingOrder(orderId) {
-        if (!confirm('آیا از لغو این اوردر پندینگ مطمئن هستید؟')) return;
-
-        try {
-            const res = await fetch(`/cancel_pending_order/${orderId}/`, {
-                method: 'POST',
-                headers: { 'X-Requested-With': 'XMLHttpRequest', 'X-CSRFToken': csrfToken }
-            });
-            const data = await res.json();
-
-            if (data.status === 'success') {
-                const row = document.getElementById(`pending-row-${orderId}`);
-                if (row) row.remove();
-
-                if (document.querySelectorAll('#pending-table tbody tr').length === 0) {
-                    document.querySelector('#pending-table tbody').innerHTML = 
-                        `<tr id="no-pending-row"><td colspan="9" style="text-align:center;color:#64748b;">هیچ اوردر پندینگی فعال نیست</td></tr>`;
-                }
-            }
-        } catch (e) {
-            console.error(e);
-        }
-    }
-
-    // ====================== Initialize - نسخه کامل ======================
-    
-    // ====================== Custom Form Components ======================
-
-    function setupCustomSelects() {
-        const selects = document.querySelectorAll('select.trade-input');
+        const multipliers = {
+            'FXCM_EURUSD': 100000,
+            'FXCM_AUDUSD': 100000,
+            'FXCM_NZDUSD': 100000,
+            'FXCM_USDJPY': 100000,
+            'FXCM_US30': 10,
+            'NAS100_USD': 1,
+            'FXCM_USOIL': 10,
+            'XAU_USD': 100,
+            'ETHUSDT': 1,
+            
+            // alias بدون پیشوند (برای ایمنی بیشتر)
+            'EURUSD': 100000,
+            'AUDUSD': 100000,
+            'NZDUSD': 100000,
+            'USDJPY': 100000,
+            'US30': 10,
+            'NAS100': 1,
+            'USOIL': 10,
+            'XAUUSD': 100
+        };
         
-        selects.forEach(select => {
-            if (select.nextElementSibling && select.nextElementSibling.classList.contains('custom-select-wrapper')) {
-                return; // Already initialized
+        const mult = multipliers[s] || 1;
+        console.log(`[PL-MULT] ${symbol} → multiplier = ${mult}`);
+        return mult;
+    }
+        function openRiskModal() {
+            document.getElementById('risk-modal').style.display = 'flex';
+            const mainSL = document.getElementById('sl-input').value;
+            if (mainSL) document.getElementById('modal-sl-input').value = mainSL;
+        }
+
+        function closeRiskModal() {
+            document.getElementById('risk-modal').style.display = 'none';
+        }
+
+        window.calculateSafeVolumeModal = function() {
+            const symbol = document.getElementById('trade-symbol').value;
+            const slInput = parseFloat(document.getElementById('modal-sl-input').value);
+            const riskPercent = parseFloat(document.getElementById('modal-risk-percent').value) || 1;
+            const balanceText = document.getElementById('balance-value').textContent;
+            const balance = parseFloat(balanceText.replace(/[$,]/g, '').trim());
+
+            if (!slInput || slInput <= 0) {
+                alert(' لطفاً استاپ لاس معتبر وارد کنید!');
+                return;
+            }
+            if (!balance || balance <= 0) {
+                alert(' بالانس خوانده نشد!');
+                return;
             }
 
-            select.style.display = 'none';
-            const wrapper = document.createElement('div');
-            wrapper.className = 'custom-select-wrapper';
+            let currentPrice = 0;
+            const priceEl = document.getElementById(`price-${symbol}`);
+            if (priceEl) currentPrice = parseFloat(priceEl.textContent);
+
+            if (!currentPrice || currentPrice <= 0) {
+                alert(' قیمت فعلی نماد پیدا نشد. اول نماد رو انتخاب کن.');
+                return;
+            }
+
+            const slDistance = Math.abs(slInput - currentPrice);
+            const multiplier = getPlMultiplierPerLot(symbol);
+            const riskAmount = (balance * riskPercent) / 100;
+
+            let safeVolume = riskAmount / (slDistance * multiplier);
+            safeVolume = Math.max(0.01, parseFloat(safeVolume.toFixed(3)));
+
+            window.calculatedSafeVolume = safeVolume;
+
+            const riskInfo = document.getElementById('modal-risk-info');
+            riskInfo.innerHTML = `
+                <strong>ریسک:</strong> ${riskAmount.toFixed(2)}$ (${riskPercent}%)<br>
+                <strong>فاصله تا SL:</strong> ${slDistance.toFixed(5)}<br>
+                <strong>Multiplier:</strong> ${multiplier.toFixed(0)}<br>
+                <span style="color:#16a34a;font-size:1.1rem">
+                    حجم پیشنهادی: <strong>${safeVolume}</strong> لات
+                </span>
+            `;
+        };
+
+        window.applyVolumeToMainForm = function() {
+            if (typeof window.calculatedSafeVolume === 'undefined') {
+                alert('ابتدا حجم را محاسبه کنید!');
+                return;
+            }
+            document.getElementById('volume-input').value = window.calculatedSafeVolume;
+            closeRiskModal();
+            alert(' حجم به فرم اصلی اعمال شد!');
+        };
+
+        // ====================== Pending Order Modal Functions ======================
+        function openPendingModal() {
+            document.getElementById('pending-modal').style.display = 'flex';
+        }
+
+        function closePendingModal() {
+            document.getElementById('pending-modal').style.display = 'none';
+        }
+
+        async function createPendingOrder() {
+            const form = document.getElementById('pending-form');
+            const formData = new FormData(form);
             
-            const trigger = document.createElement('div');
-            trigger.className = 'custom-select-trigger trade-input';
-            trigger.tabIndex = 0;
-            
-            const selectedText = document.createElement('span');
-            selectedText.textContent = select.options[select.selectedIndex]?.text || '';
-            
-            const arrow = document.createElement('svg');
-            arrow.innerHTML = '<path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>';
-            arrow.setAttribute('viewBox', '0 0 24 24');
-            arrow.setAttribute('width', '16');
-            arrow.setAttribute('height', '16');
-            arrow.className = 'custom-select-arrow';
-            
-            trigger.appendChild(selectedText);
-            trigger.appendChild(arrow);
-            
-            const optionsList = document.createElement('div');
-            optionsList.className = 'custom-select-options';
-            
-            Array.from(select.options).forEach((option, index) => {
-                const optEl = document.createElement('div');
-                optEl.className = 'custom-select-option';
-                optEl.textContent = option.text;
-                optEl.dataset.value = option.value;
-                if (select.selectedIndex === index) {
-                    optEl.classList.add('selected');
+            try {
+                const res = await fetch('{% url "create_pending_order" %}', {
+                    method: 'POST',
+                    body: formData,
+                    headers: { 'X-Requested-With': 'XMLHttpRequest', 'X-CSRFToken': csrfToken }
+                });
+                const data = await res.json();
+
+                if (data.status === 'success') {
+                    const tbody = document.querySelector('#pending-table tbody');
+                    if (document.getElementById('no-pending-row')) tbody.innerHTML = '';
+
+                    const row = document.createElement('tr');
+                    row.id = `pending-row-${data.order_id}`;
+                    row.innerHTML = `
+                        <td>${data.order_id}</td>
+                        <td>${formData.get('symbol')}</td>
+                        <td>${formData.get('order_type')}</td>
+                        <td>${parseFloat(formData.get('volume')).toFixed(2)}</td>
+                        <td>${parseFloat(formData.get('entry_price')).toFixed(5)}</td>
+                        <td>${formData.get('stop_loss') || '—'}</td>
+                        <td>${formData.get('take_profit') || '—'}</td>
+                        <td>همین الان</td>
+                        <td><button class="close-btn" onclick="cancelPendingOrder(${data.order_id})">لغو</button></td>
+                    `;
+                    tbody.appendChild(row);
+
+                    form.reset();
+                    closePendingModal();
+                    alert('اوردر پندینگ با موفقیت ثبت شد');
+                } else {
+                    alert(' ' + (data.message || 'خطا'));
                 }
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        async function cancelPendingOrder(orderId) {
+            if (!confirm('آیا از لغو این اوردر پندینگ مطمئن هستید؟')) return;
+
+            try {
+                const res = await fetch(`/cancel_pending_order/${orderId}/`, {
+                    method: 'POST',
+                    headers: { 'X-Requested-With': 'XMLHttpRequest', 'X-CSRFToken': csrfToken }
+                });
+                const data = await res.json();
+
+                if (data.status === 'success') {
+                    const row = document.getElementById(`pending-row-${orderId}`);
+                    if (row) row.remove();
+
+                    if (document.querySelectorAll('#pending-table tbody tr').length === 0) {
+                        document.querySelector('#pending-table tbody').innerHTML = 
+                            `<tr id="no-pending-row"><td colspan="9" style="text-align:center;color:#64748b;">هیچ اوردر پندینگی فعال نیست</td></tr>`;
+                    }
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        // ====================== Initialize - نسخه کامل ======================
+        
+        // ====================== Custom Form Components ======================
+
+        function setupCustomSelects() {
+            const selects = document.querySelectorAll('select.trade-input');
+            
+            selects.forEach(select => {
+                if (select.nextElementSibling && select.nextElementSibling.classList.contains('custom-select-wrapper')) {
+                    return; // Already initialized
+                }
+
+                select.style.display = 'none';
+                const wrapper = document.createElement('div');
+                wrapper.className = 'custom-select-wrapper';
                 
-                optEl.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    select.value = option.value;
-                    selectedText.textContent = option.text;
-                    select.dispatchEvent(new Event('change'));
+                const trigger = document.createElement('div');
+                trigger.className = 'custom-select-trigger trade-input';
+                trigger.tabIndex = 0;
+                
+                const selectedText = document.createElement('span');
+                selectedText.textContent = select.options[select.selectedIndex]?.text || '';
+                
+                const arrow = document.createElement('svg');
+                arrow.innerHTML = '<path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>';
+                arrow.setAttribute('viewBox', '0 0 24 24');
+                arrow.setAttribute('width', '16');
+                arrow.setAttribute('height', '16');
+                arrow.className = 'custom-select-arrow';
+                
+                trigger.appendChild(selectedText);
+                trigger.appendChild(arrow);
+                
+                const optionsList = document.createElement('div');
+                optionsList.className = 'custom-select-options';
+                
+                Array.from(select.options).forEach((option, index) => {
+                    const optEl = document.createElement('div');
+                    optEl.className = 'custom-select-option';
+                    optEl.textContent = option.text;
+                    optEl.dataset.value = option.value;
+                    if (select.selectedIndex === index) {
+                        optEl.classList.add('selected');
+                    }
                     
-                    wrapper.querySelectorAll('.custom-select-option').forEach(el => el.classList.remove('selected'));
-                    optEl.classList.add('selected');
-                    wrapper.classList.remove('open');
+                    optEl.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        select.value = option.value;
+                        selectedText.textContent = option.text;
+                        select.dispatchEvent(new Event('change'));
+                        
+                        wrapper.querySelectorAll('.custom-select-option').forEach(el => el.classList.remove('selected'));
+                        optEl.classList.add('selected');
+                        wrapper.classList.remove('open');
+                    });
+                    
+                    optionsList.appendChild(optEl);
                 });
                 
-                optionsList.appendChild(optEl);
+                wrapper.appendChild(trigger);
+                wrapper.appendChild(optionsList);
+                select.parentNode.insertBefore(wrapper, select.nextSibling);
+
+                trigger.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const isOpen = wrapper.classList.contains('open');
+                    document.querySelectorAll('.custom-select-wrapper').forEach(w => w.classList.remove('open'));
+                    if (!isOpen) wrapper.classList.add('open');
+                });
+                
+                trigger.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        trigger.click();
+                    } else if (e.key === 'Escape') {
+                        wrapper.classList.remove('open');
+                    }
+                });
+
+                // Sync programmatic changes
+                select.addEventListener('change', () => {
+                    const selectedOpt = select.options[select.selectedIndex];
+                    if (selectedOpt) {
+                        selectedText.textContent = selectedOpt.text;
+                        wrapper.querySelectorAll('.custom-select-option').forEach(el => {
+                            el.classList.toggle('selected', el.dataset.value === selectedOpt.value);
+                        });
+                    }
+                });
             });
             
-            wrapper.appendChild(trigger);
-            wrapper.appendChild(optionsList);
-            select.parentNode.insertBefore(wrapper, select.nextSibling);
-
-            trigger.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const isOpen = wrapper.classList.contains('open');
+            document.addEventListener('click', () => {
                 document.querySelectorAll('.custom-select-wrapper').forEach(w => w.classList.remove('open'));
-                if (!isOpen) wrapper.classList.add('open');
             });
+        }
+
+        function setupCustomNumberInputs() {
+            const numberInputs = document.querySelectorAll('input[type="number"]');
             
-            trigger.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    trigger.click();
-                } else if (e.key === 'Escape') {
-                    wrapper.classList.remove('open');
-                }
+            numberInputs.forEach(input => {
+                if (input.parentNode.classList.contains('number-input-wrapper')) return;
+
+                const wrapper = document.createElement('div');
+                wrapper.className = 'number-input-wrapper';
+                input.parentNode.insertBefore(wrapper, input);
+                wrapper.appendChild(input);
+
+                const decBtn = document.createElement('button');
+                decBtn.type = 'button';
+                decBtn.className = 'number-btn dec-btn';
+                decBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/></svg>';
+
+                const incBtn = document.createElement('button');
+                incBtn.type = 'button';
+                incBtn.className = 'number-btn inc-btn';
+                incBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>';
+
+                wrapper.insertBefore(decBtn, input);
+                wrapper.appendChild(incBtn);
+
+                let interval;
+                let timeout;
+                
+                const step = parseFloat(input.step) || 1;
+                const min = input.hasAttribute('min') ? parseFloat(input.min) : -Infinity;
+                const max = input.hasAttribute('max') ? parseFloat(input.max) : Infinity;
+
+                const getPrecision = (num) => {
+                    const str = String(num);
+                    if (!str.includes('.')) return 0;
+                    return str.split('.')[1].length;
+                };
+                const precision = Math.max(getPrecision(step), input.value ? getPrecision(input.value) : 0);
+
+                const updateValue = (increment) => {
+                    let val = parseFloat(input.value) || 0;
+                    val += increment ? step : -step;
+                    
+                    if (val < min) val = min;
+                    if (val > max) val = max;
+                    
+                    input.value = val.toFixed(precision);
+                    input.dispatchEvent(new Event('change'));
+                };
+
+                const startChange = (increment) => {
+                    updateValue(increment);
+                    timeout = setTimeout(() => {
+                        interval = setInterval(() => updateValue(increment), 50);
+                    }, 400);
+                };
+
+                const stopChange = () => {
+                    clearTimeout(timeout);
+                    clearInterval(interval);
+                };
+
+                decBtn.addEventListener('mousedown', () => startChange(false));
+                decBtn.addEventListener('mouseup', stopChange);
+                decBtn.addEventListener('mouseleave', stopChange);
+                decBtn.addEventListener('touchstart', (e) => { e.preventDefault(); startChange(false); }, {passive: false});
+                decBtn.addEventListener('touchend', stopChange);
+
+                incBtn.addEventListener('mousedown', () => startChange(true));
+                incBtn.addEventListener('mouseup', stopChange);
+                incBtn.addEventListener('mouseleave', stopChange);
+                incBtn.addEventListener('touchstart', (e) => { e.preventDefault(); startChange(true); }, {passive: false});
+                incBtn.addEventListener('touchend', stopChange);
             });
+        }
 
-            // Sync programmatic changes
-            select.addEventListener('change', () => {
-                const selectedOpt = select.options[select.selectedIndex];
-                if (selectedOpt) {
-                    selectedText.textContent = selectedOpt.text;
-                    wrapper.querySelectorAll('.custom-select-option').forEach(el => {
-                        el.classList.toggle('selected', el.dataset.value === selectedOpt.value);
-                    });
-                }
-            });
-        });
-        
-        document.addEventListener('click', () => {
-            document.querySelectorAll('.custom-select-wrapper').forEach(w => w.classList.remove('open'));
-        });
-    }
-
-    function setupCustomNumberInputs() {
-        const numberInputs = document.querySelectorAll('input[type="number"]');
-        
-        numberInputs.forEach(input => {
-            if (input.parentNode.classList.contains('number-input-wrapper')) return;
-
-            const wrapper = document.createElement('div');
-            wrapper.className = 'number-input-wrapper';
-            input.parentNode.insertBefore(wrapper, input);
-            wrapper.appendChild(input);
-
-            const decBtn = document.createElement('button');
-            decBtn.type = 'button';
-            decBtn.className = 'number-btn dec-btn';
-            decBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/></svg>';
-
-            const incBtn = document.createElement('button');
-            incBtn.type = 'button';
-            incBtn.className = 'number-btn inc-btn';
-            incBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>';
-
-            wrapper.insertBefore(decBtn, input);
-            wrapper.appendChild(incBtn);
-
-            let interval;
-            let timeout;
+        // Call setups when DOM is loaded or forms are opened
+        document.addEventListener('DOMContentLoaded', () => {
+            setupCustomSelects();
+            setupCustomNumberInputs();
             
-            const step = parseFloat(input.step) || 1;
-            const min = input.hasAttribute('min') ? parseFloat(input.min) : -Infinity;
-            const max = input.hasAttribute('max') ? parseFloat(input.max) : Infinity;
-
-            const getPrecision = (num) => {
-                const str = String(num);
-                if (!str.includes('.')) return 0;
-                return str.split('.')[1].length;
+            // Re-run for dynamic content or specific modals if needed.
+            // For instance, overriding openPendingModal slightly
+            const originalOpenPendingModal = window.openPendingModal;
+            window.openPendingModal = function() {
+                originalOpenPendingModal();
+                setupCustomSelects();
+                setupCustomNumberInputs();
             };
-            const precision = Math.max(getPrecision(step), input.value ? getPrecision(input.value) : 0);
-
-            const updateValue = (increment) => {
-                let val = parseFloat(input.value) || 0;
-                val += increment ? step : -step;
-                
-                if (val < min) val = min;
-                if (val > max) val = max;
-                
-                input.value = val.toFixed(precision);
-                input.dispatchEvent(new Event('change'));
+            const originalOpenRiskModal = window.openRiskModal;
+            window.openRiskModal = function() {
+                originalOpenRiskModal();
+                setupCustomSelects();
+                setupCustomNumberInputs();
             };
-
-            const startChange = (increment) => {
-                updateValue(increment);
-                timeout = setTimeout(() => {
-                    interval = setInterval(() => updateValue(increment), 50);
-                }, 400);
+            const originalOpenEditModal = window.openEditModal;
+            window.openEditModal = function(id, sl, tp) {
+                originalOpenEditModal(id, sl, tp);
+                setupCustomSelects();
+                setupCustomNumberInputs();
             };
-
-            const stopChange = () => {
-                clearTimeout(timeout);
-                clearInterval(interval);
-            };
-
-            decBtn.addEventListener('mousedown', () => startChange(false));
-            decBtn.addEventListener('mouseup', stopChange);
-            decBtn.addEventListener('mouseleave', stopChange);
-            decBtn.addEventListener('touchstart', (e) => { e.preventDefault(); startChange(false); }, {passive: false});
-            decBtn.addEventListener('touchend', stopChange);
-
-            incBtn.addEventListener('mousedown', () => startChange(true));
-            incBtn.addEventListener('mouseup', stopChange);
-            incBtn.addEventListener('mouseleave', stopChange);
-            incBtn.addEventListener('touchstart', (e) => { e.preventDefault(); startChange(true); }, {passive: false});
-            incBtn.addEventListener('touchend', stopChange);
         });
-    }
-
-    // Call setups when DOM is loaded or forms are opened
     document.addEventListener('DOMContentLoaded', () => {
-        setupCustomSelects();
-        setupCustomNumberInputs();
-        
-        // Re-run for dynamic content or specific modals if needed.
-        // For instance, overriding openPendingModal slightly
-        const originalOpenPendingModal = window.openPendingModal;
-        window.openPendingModal = function() {
-            originalOpenPendingModal();
-            setupCustomSelects();
-            setupCustomNumberInputs();
-        };
-        const originalOpenRiskModal = window.openRiskModal;
-        window.openRiskModal = function() {
-            originalOpenRiskModal();
-            setupCustomSelects();
-            setupCustomNumberInputs();
-        };
-        const originalOpenEditModal = window.openEditModal;
-        window.openEditModal = function(id, sl, tp) {
-            originalOpenEditModal(id, sl, tp);
-            setupCustomSelects();
-            setupCustomNumberInputs();
-        };
-    });
-document.addEventListener('DOMContentLoaded', () => {
 
-        // اتصال وب‌سوکت قیمت برای همه نمادها
-        {% for item in price_list %}
-            connectPriceWebSocket('{{ item.symbol }}');
-        {% endfor %}
+            // اتصال وب‌سوکت قیمت برای همه نمادها
+            {% for item in price_list %}
+                connectPriceWebSocket('{{ item.symbol }}');
+            {% endfor %}
 
-        // اگر هیچ پوزیشنی نبود، اکویتی = بالانس
-        if (document.querySelector('#open_positions tbody').children.length === 0) {
-            const balance = document.getElementById('balance-value').textContent;
-            document.getElementById('equity-value').textContent = balance;
-        }
+            // اگر هیچ پوزیشنی نبود، اکویتی = بالانس
+            if (document.querySelector('#open_positions tbody').children.length === 0) {
+                const balance = document.getElementById('balance-value').textContent;
+                document.getElementById('equity-value').textContent = balance;
+            }
 
-        // کلیک روی دکمه‌های بالای چارت
-        const symbolButtons = document.querySelectorAll('#symbol-selector .symbol-btn');
-        symbolButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                loadBitycleChart(btn.dataset.symbol);
+            // کلیک روی دکمه‌های بالای چارت
+            const symbolButtons = document.querySelectorAll('#symbol-selector .symbol-btn');
+            symbolButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    loadBitycleChart(btn.dataset.symbol);
+                });
             });
+
+            // *** مهم: انتخاب نماد از فرم معامله → تغییر چارت ***
+            const tradeSymbolSelect = document.getElementById('trade-symbol');
+            if (tradeSymbolSelect) {
+                tradeSymbolSelect.addEventListener('change', function() {
+                    const selectedSymbol = this.value;
+                    if (selectedSymbol) {
+                        loadBitycleChart(selectedSymbol);
+                    }
+                });
+            }
+
+            // لود اولیه چارت
+            setTimeout(() => {
+                loadBitycleChart('US30');
+            }, 500);
+
+            console.log(' proopco Trader کاملاً بارگذاری و سینک شد');
         });
-
-        // *** مهم: انتخاب نماد از فرم معامله → تغییر چارت ***
-        const tradeSymbolSelect = document.getElementById('trade-symbol');
-        if (tradeSymbolSelect) {
-            tradeSymbolSelect.addEventListener('change', function() {
-                const selectedSymbol = this.value;
-                if (selectedSymbol) {
-                    loadBitycleChart(selectedSymbol);
-                }
-            });
-        }
-
-        // لود اولیه چارت
-        setTimeout(() => {
-            loadBitycleChart('US30');
-        }, 500);
-
-        console.log(' proopco Trader کاملاً بارگذاری و سینک شد');
-    });
-</script>
+    </script>
 </body>
 </html>
