@@ -13,15 +13,15 @@
         <header>
             <div style="display: flex; position: relative; align-items: center; gap: 12px;">
                 <!-- لوگو -->
-                <img src="{% static 'images/logo.svg' %}" 
-                    alt="Proopco Trader Logo" 
+                <img src="{% static 'images/logo.svg' %}"
+                    alt="Proopco Trader Logo"
                     style="height: 25px; width: auto; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));">
 
                 <!-- عنوان -->
-                <h1 style="margin: 0; 
-                        font-size: 1.1rem; 
-                        font-weight: 400; 
-                        letter-spacing: -0.03em; 
+                <h1 style="margin: 0;
+                        font-size: 1.1rem;
+                        font-weight: 400;
+                        letter-spacing: -0.03em;
                         color: #b9a278;
                         opacity: 0;
                         visibility: hidden;
@@ -60,17 +60,17 @@
                         <button class="trade-btn buy" type="button" onclick="setTradeType('buy')">خرید</button>
                         <button class="trade-btn sell" type="button" onclick="setTradeType('sell')">فروش</button>
                     </div>
-                    
+
                 </form>
 
-                <button type="button" onclick="openRiskModal()" 
-                        style="margin-top: 12px; width: 100%; background: #252a32; color: white; border: none; border-radius: 8px; padding: 0.65rem; font-size: 0.9rem; cursor: pointer;">
-                    📊 اکسپرت مدیریت سرمایه
+                <button type="button" onclick="openRiskModal()"
+                        style="margin-top: 12px; width: 100%; background: #252a32; color: white; border: none; border-radius: 8px; padding: 0.65rem; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 20V10M18 20V4M6 20v-4" stroke-linecap="round" stroke-linejoin="round"/></svg> اکسپرت مدیریت سرمایه
                 </button>
 
-                <button type="button" onclick="openPendingModal()" 
-                        style="margin-top: 8px; width: 100%; background: #252a32; color: white; border: none; border-radius: 8px; padding: 0.65rem; font-size: 0.9rem; cursor: pointer;">
-                    📍 اوردر پندینگ
+                <button type="button" onclick="openPendingModal()"
+                        style="margin-top: 8px; width: 100%; background: #252a32; color: white; border: none; border-radius: 8px; padding: 0.65rem; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="10" r="3" stroke-linecap="round" stroke-linejoin="round"/></svg> اوردر پندینگ
                 </button>
 
                 <div id="trade-messages"></div>
@@ -362,14 +362,14 @@
         <div id="risk-modal" class="modal">
             <div class="modal-content">
                 <button class="modal-close" onclick="closeRiskModal()">×</button>
-                <h3>📊 اکسپرت مدیریت سرمایه</h3>
+                <h3 style="display: flex; align-items: center; justify-content: center; gap: 8px;"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 20V10M18 20V4M6 20v-4" stroke-linecap="round" stroke-linejoin="round"/></svg> اکسپرت مدیریت سرمایه</h3>
                 <label style="display:block;margin:8px 0 4px;font-size:0.8rem;color:#64748b;">ریسک درصد (%)</label>
                 <input type="number" id="modal-risk-percent" class="modal-input" value="1" step="0.1" min="0.1" max="5">
                 <label style="display:block;margin:8px 0 4px;font-size:0.8rem;color:#64748b;">استاپ لاس (SL)</label>
                 <input type="number" id="modal-sl-input" class="modal-input" step="0.00001" placeholder="مثلاً 1.08500">
                 <div id="modal-risk-info" style="font-size:0.8rem; color:#64748b; margin:8px 0; text-align:center; min-height:22px;">ریسک: — $</div>
                 <button class="modal-btn" onclick="calculateSafeVolumeModal()" style="background:#252a32; margin-bottom:8px;">محاسبه حجم ایمن</button>
-                <button onclick="applyVolumeToMainForm()" style="width:100%; background:#16a34a; color:white; border:none; border-radius:6px; padding:0.7rem; font-weight:600; cursor:pointer;">✅ کپی حجم به فرم اصلی</button>
+                <button onclick="applyVolumeToMainForm()" style="width:100%; background:#16a34a; color:white; border:none; border-radius:6px; padding:0.7rem; font-weight:600; cursor:pointer; display: flex; align-items: center; justify-content: center; gap: 8px;"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg> کپی حجم به فرم اصلی</button>
             </div>
         </div>
 
@@ -381,11 +381,11 @@
                     <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 8v4l3 3M3 12a9 9 0 1118 0 9 9 0 01-18 0z"/></svg>
                     ثبت اوردر پندینگ
                 </h3>
-                
+
                 <div class="trade-form">
                     <form id="pending-form">
                         {% csrf_token %}
-                        
+
                         <div class="form-row">
                             <label>نماد</label>
                             <select name="symbol" id="pending-symbol" class="trade-input">
@@ -440,9 +440,9 @@
 
         function connect() {
             ws = new WebSocket(url);
-            
+
             ws.onopen = () => {
-                console.log(`✅ WebSocket متصل شد: ${url}`);
+                console.log(` WebSocket متصل شد: ${url}`);
                 if (reconnectTimer) clearTimeout(reconnectTimer);
             };
 
@@ -452,7 +452,7 @@
             };
 
             ws.onclose = () => {
-                console.log(`❌ WebSocket قطع شد: ${url} → تلاش برای اتصال مجدد...`);
+                console.log(` WebSocket قطع شد: ${url} → تلاش برای اتصال مجدد...`);
                 reconnectTimer = setTimeout(() => connect(), reconnectInterval);
             };
 
@@ -519,7 +519,7 @@
             tradeSelect.value = symbol;
         }
 
-        console.log(`📊 چارت تغییر کرد به: ${symbol} | ویجت: ${widgetSymbol}`);
+        console.log(` چارت تغییر کرد به: ${symbol} | ویجت: ${widgetSymbol}`);
     }
     // ====================== Tab Switching (Desktop) ======================
     function openTab(tabId) {
@@ -533,7 +533,7 @@
     // ====================== Mobile Modal Functions ======================
     function openMobileModal(tabId) {
         document.querySelectorAll('.mobile-tab').forEach(t => t.classList.remove('active'));
-        const activeTab = Array.from(document.querySelectorAll('.mobile-tab')).find(tab => 
+        const activeTab = Array.from(document.querySelectorAll('.mobile-tab')).find(tab =>
             tab.getAttribute('onclick').includes(`'${tabId}'`)
         );
         if (activeTab) activeTab.classList.add('active');
@@ -745,8 +745,8 @@
 
             const data = await res.json();
             const msgDiv = document.getElementById('trade-messages');
-            msgDiv.innerHTML = data.status === 'success' 
-                ? `<p style="color: green;">${data.message}</p>` 
+            msgDiv.innerHTML = data.status === 'success'
+                ? `<p style="color: green;">${data.message}</p>`
                 : `<p style="color: red;">${data.message}</p>`;
 
             if (data.status === 'success') {
@@ -770,7 +770,7 @@
         const btn = event.currentTarget;
         if (btn.disabled) return;
         btn.disabled = true;
-        btn.innerHTML = '⏳';
+        btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>';
 
         try {
             const res = await fetch(`/close_position/${posId}/`, {
@@ -780,7 +780,7 @@
             const data = await res.json();
             const msgDiv = document.getElementById('trade-messages');
             if (data.status === 'success') {
-                msgDiv.innerHTML = '<p style="color: green;">✅ معامله بسته شد</p>';
+                msgDiv.innerHTML = '<p style="color: green;"><svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg> معامله بسته شد</p>';
                 const row = document.querySelector(`#pl-${data.pos_id}`)?.closest('tr');
                 if (row) row.remove();
 
@@ -864,9 +864,9 @@
           // ====================== PL Multiplier برای همه نمادها (نسخه نهایی و قوی) ======================
     function getPlMultiplierPerLot(symbol) {
     if (!symbol) return 1;
-    
+
     const s = String(symbol).trim().toUpperCase();
-    
+
     const multipliers = {
         'FXCM_EURUSD': 100000,
         'FXCM_AUDUSD': 100000,
@@ -877,7 +877,7 @@
         'FXCM_USOIL': 10,
         'XAU_USD': 100,
         'ETHUSDT': 1,
-        
+
         // alias بدون پیشوند (برای ایمنی بیشتر)
         'EURUSD': 100000,
         'AUDUSD': 100000,
@@ -888,7 +888,7 @@
         'USOIL': 10,
         'XAUUSD': 100
     };
-    
+
     const mult = multipliers[s] || 1;
     console.log(`[PL-MULT] ${symbol} → multiplier = ${mult}`);
     return mult;
@@ -911,11 +911,11 @@
         const balance = parseFloat(balanceText.replace(/[$,]/g, '').trim());
 
         if (!slInput || slInput <= 0) {
-            alert('⚠️ لطفاً استاپ لاس معتبر وارد کنید!');
+            alert(' لطفاً استاپ لاس معتبر وارد کنید!');
             return;
         }
         if (!balance || balance <= 0) {
-            alert('⚠️ بالانس خوانده نشد!');
+            alert(' بالانس خوانده نشد!');
             return;
         }
 
@@ -924,7 +924,7 @@
         if (priceEl) currentPrice = parseFloat(priceEl.textContent);
 
         if (!currentPrice || currentPrice <= 0) {
-            alert('⚠️ قیمت فعلی نماد پیدا نشد. اول نماد رو انتخاب کن.');
+            alert(' قیمت فعلی نماد پیدا نشد. اول نماد رو انتخاب کن.');
             return;
         }
 
@@ -955,7 +955,7 @@
         }
         document.getElementById('volume-input').value = window.calculatedSafeVolume;
         closeRiskModal();
-        alert('✅ حجم به فرم اصلی اعمال شد!');
+        alert(' حجم به فرم اصلی اعمال شد!');
     };
 
     // ====================== Pending Order Modal Functions ======================
@@ -970,7 +970,7 @@
     async function createPendingOrder() {
         const form = document.getElementById('pending-form');
         const formData = new FormData(form);
-        
+
         try {
             const res = await fetch('{% url "create_pending_order" %}', {
                 method: 'POST',
@@ -1000,9 +1000,9 @@
 
                 form.reset();
                 closePendingModal();
-                alert('✅ اوردر پندینگ با موفقیت ثبت شد');
+                alert('اوردر پندینگ با موفقیت ثبت شد');
             } else {
-                alert('❌ ' + (data.message || 'خطا'));
+                alert(' ' + (data.message || 'خطا'));
             }
         } catch (e) {
             console.error(e);
@@ -1024,7 +1024,7 @@
                 if (row) row.remove();
 
                 if (document.querySelectorAll('#pending-table tbody tr').length === 0) {
-                    document.querySelector('#pending-table tbody').innerHTML = 
+                    document.querySelector('#pending-table tbody').innerHTML =
                         `<tr id="no-pending-row"><td colspan="9" style="text-align:center;color:#64748b;">هیچ اوردر پندینگی فعال نیست</td></tr>`;
                 }
             }
@@ -1034,7 +1034,203 @@
     }
 
     // ====================== Initialize - نسخه کامل ======================
+
+    // ====================== Custom Form Components ======================
+
+    function setupCustomSelects() {
+        const selects = document.querySelectorAll('select.trade-input');
+
+        selects.forEach(select => {
+            if (select.nextElementSibling && select.nextElementSibling.classList.contains('custom-select-wrapper')) {
+                return; // Already initialized
+            }
+
+            select.style.display = 'none';
+            const wrapper = document.createElement('div');
+            wrapper.className = 'custom-select-wrapper';
+
+            const trigger = document.createElement('div');
+            trigger.className = 'custom-select-trigger trade-input';
+            trigger.tabIndex = 0;
+
+            const selectedText = document.createElement('span');
+            selectedText.textContent = select.options[select.selectedIndex]?.text || '';
+
+            const arrow = document.createElement('svg');
+            arrow.innerHTML = '<path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>';
+            arrow.setAttribute('viewBox', '0 0 24 24');
+            arrow.setAttribute('width', '16');
+            arrow.setAttribute('height', '16');
+            arrow.className = 'custom-select-arrow';
+
+            trigger.appendChild(selectedText);
+            trigger.appendChild(arrow);
+
+            const optionsList = document.createElement('div');
+            optionsList.className = 'custom-select-options';
+
+            Array.from(select.options).forEach((option, index) => {
+                const optEl = document.createElement('div');
+                optEl.className = 'custom-select-option';
+                optEl.textContent = option.text;
+                optEl.dataset.value = option.value;
+                if (select.selectedIndex === index) {
+                    optEl.classList.add('selected');
+                }
+
+                optEl.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    select.value = option.value;
+                    selectedText.textContent = option.text;
+                    select.dispatchEvent(new Event('change'));
+
+                    wrapper.querySelectorAll('.custom-select-option').forEach(el => el.classList.remove('selected'));
+                    optEl.classList.add('selected');
+                    wrapper.classList.remove('open');
+                });
+
+                optionsList.appendChild(optEl);
+            });
+
+            wrapper.appendChild(trigger);
+            wrapper.appendChild(optionsList);
+            select.parentNode.insertBefore(wrapper, select.nextSibling);
+
+            trigger.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const isOpen = wrapper.classList.contains('open');
+                document.querySelectorAll('.custom-select-wrapper').forEach(w => w.classList.remove('open'));
+                if (!isOpen) wrapper.classList.add('open');
+            });
+
+            trigger.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    trigger.click();
+                } else if (e.key === 'Escape') {
+                    wrapper.classList.remove('open');
+                }
+            });
+
+            // Sync programmatic changes
+            select.addEventListener('change', () => {
+                const selectedOpt = select.options[select.selectedIndex];
+                if (selectedOpt) {
+                    selectedText.textContent = selectedOpt.text;
+                    wrapper.querySelectorAll('.custom-select-option').forEach(el => {
+                        el.classList.toggle('selected', el.dataset.value === selectedOpt.value);
+                    });
+                }
+            });
+        });
+
+        document.addEventListener('click', () => {
+            document.querySelectorAll('.custom-select-wrapper').forEach(w => w.classList.remove('open'));
+        });
+    }
+
+    function setupCustomNumberInputs() {
+        const numberInputs = document.querySelectorAll('input[type="number"]');
+
+        numberInputs.forEach(input => {
+            if (input.parentNode.classList.contains('number-input-wrapper')) return;
+
+            const wrapper = document.createElement('div');
+            wrapper.className = 'number-input-wrapper';
+            input.parentNode.insertBefore(wrapper, input);
+            wrapper.appendChild(input);
+
+            const decBtn = document.createElement('button');
+            decBtn.type = 'button';
+            decBtn.className = 'number-btn dec-btn';
+            decBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/></svg>';
+
+            const incBtn = document.createElement('button');
+            incBtn.type = 'button';
+            incBtn.className = 'number-btn inc-btn';
+            incBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>';
+
+            wrapper.insertBefore(decBtn, input);
+            wrapper.appendChild(incBtn);
+
+            let interval;
+            let timeout;
+
+            const step = parseFloat(input.step) || 1;
+            const min = input.hasAttribute('min') ? parseFloat(input.min) : -Infinity;
+            const max = input.hasAttribute('max') ? parseFloat(input.max) : Infinity;
+
+            const getPrecision = (num) => {
+                const str = String(num);
+                if (!str.includes('.')) return 0;
+                return str.split('.')[1].length;
+            };
+            const precision = Math.max(getPrecision(step), input.value ? getPrecision(input.value) : 0);
+
+            const updateValue = (increment) => {
+                let val = parseFloat(input.value) || 0;
+                val += increment ? step : -step;
+
+                if (val < min) val = min;
+                if (val > max) val = max;
+
+                input.value = val.toFixed(precision);
+                input.dispatchEvent(new Event('change'));
+            };
+
+            const startChange = (increment) => {
+                updateValue(increment);
+                timeout = setTimeout(() => {
+                    interval = setInterval(() => updateValue(increment), 50);
+                }, 400);
+            };
+
+            const stopChange = () => {
+                clearTimeout(timeout);
+                clearInterval(interval);
+            };
+
+            decBtn.addEventListener('mousedown', () => startChange(false));
+            decBtn.addEventListener('mouseup', stopChange);
+            decBtn.addEventListener('mouseleave', stopChange);
+            decBtn.addEventListener('touchstart', (e) => { e.preventDefault(); startChange(false); }, {passive: false});
+            decBtn.addEventListener('touchend', stopChange);
+
+            incBtn.addEventListener('mousedown', () => startChange(true));
+            incBtn.addEventListener('mouseup', stopChange);
+            incBtn.addEventListener('mouseleave', stopChange);
+            incBtn.addEventListener('touchstart', (e) => { e.preventDefault(); startChange(true); }, {passive: false});
+            incBtn.addEventListener('touchend', stopChange);
+        });
+    }
+
+    // Call setups when DOM is loaded or forms are opened
     document.addEventListener('DOMContentLoaded', () => {
+        setupCustomSelects();
+        setupCustomNumberInputs();
+
+        // Re-run for dynamic content or specific modals if needed.
+        // For instance, overriding openPendingModal slightly
+        const originalOpenPendingModal = window.openPendingModal;
+        window.openPendingModal = function() {
+            originalOpenPendingModal();
+            setupCustomSelects();
+            setupCustomNumberInputs();
+        };
+        const originalOpenRiskModal = window.openRiskModal;
+        window.openRiskModal = function() {
+            originalOpenRiskModal();
+            setupCustomSelects();
+            setupCustomNumberInputs();
+        };
+        const originalOpenEditModal = window.openEditModal;
+        window.openEditModal = function(id, sl, tp) {
+            originalOpenEditModal(id, sl, tp);
+            setupCustomSelects();
+            setupCustomNumberInputs();
+        };
+    });
+document.addEventListener('DOMContentLoaded', () => {
 
         // اتصال وب‌سوکت قیمت برای همه نمادها
         {% for item in price_list %}
@@ -1071,7 +1267,7 @@
             loadBitycleChart('US30');
         }, 500);
 
-        console.log('✅ proopco Trader کاملاً بارگذاری و سینک شد');
+        console.log(' proopco Trader کاملاً بارگذاری و سینک شد');
     });
 </script>
 </body>
