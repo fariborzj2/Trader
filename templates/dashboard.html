@@ -338,98 +338,130 @@
             <div class="mobile-modal-content">
                 <div class="mobile-modal-header">
                     <h3 id="mobile-modal-title">عنوان</h3>
-                    <button class="mobile-modal-close" onclick="closeMobileModal()">✕</button>
+                    <button class="mobile-modal-close" onclick="closeMobileModal()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
                 </div>
                 <div class="mobile-modal-body" id="mobile-modal-body"></div>
             </div>
         </div>
 
         <!-- Edit SL/TP Modal -->
-        <div id="edit-modal" class="modal">
-            <div class="modal-content">
-                <button class="modal-close" onclick="closeEditModal()">×</button>
-                <h3>ویرایش استاپ لاس و تیک پروفیت</h3>
-                <input type="hidden" id="edit-pos-id">
-                <label style="display:block;margin:8px 0 4px;font-size:0.8rem;color:#64748b;">استاپ لاس (SL)</label>
+<div id="edit-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>ویرایش استاپ لاس و تیک پروفیت</h3>
+            <button class="modal-close" onclick="closeEditModal()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" id="edit-pos-id">
+            <div class="modal-form-row">
+                <label>استاپ لاس (SL)</label>
                 <input type="number" id="modal-sl" step="0.00001" class="modal-input" placeholder="مثلاً 1.08500">
-                <label style="display:block;margin:8px 0 4px;font-size:0.8rem;color:#64748b;">تیک پروفیت (TP)</label>
+            </div>
+            <div class="modal-form-row">
+                <label>تیک پروفیت (TP)</label>
                 <input type="number" id="modal-tp" step="0.00001" class="modal-input" placeholder="مثلاً 1.09500">
-                <button class="modal-btn" onclick="saveEditPosition()">ذخیره تغییرات</button>
+            </div>
+            <div class="modal-actions">
+                <button class="modal-btn primary-btn" onclick="saveEditPosition()">ذخیره تغییرات</button>
             </div>
         </div>
+    </div>
+</div>
 
         <!-- Risk Expert Modal -->
-        <div id="risk-modal" class="modal">
-            <div class="modal-content">
-                <button class="modal-close" onclick="closeRiskModal()">×</button>
-                <h3 style="display: flex; align-items: center; justify-content: center; gap: 8px;"><svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 20V10M18 20V4M6 20v-4" stroke-linecap="round" stroke-linejoin="round"/></svg> اکسپرت مدیریت سرمایه</h3>
-                <label style="display:block;margin:8px 0 4px;font-size:0.8rem;color:#64748b;">ریسک درصد (%)</label>
+<div id="risk-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>
+                <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 20V10M18 20V4M6 20v-4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                اکسپرت مدیریت سرمایه
+            </h3>
+            <button class="modal-close" onclick="closeRiskModal()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="modal-form-row">
+                <label>ریسک درصد (%)</label>
                 <input type="number" id="modal-risk-percent" class="modal-input" value="1" step="0.1" min="0.1" max="5">
-                <label style="display:block;margin:8px 0 4px;font-size:0.8rem;color:#64748b;">استاپ لاس (SL)</label>
+            </div>
+            <div class="modal-form-row">
+                <label>استاپ لاس (SL)</label>
                 <input type="number" id="modal-sl-input" class="modal-input" step="0.00001" placeholder="مثلاً 1.08500">
-                <div id="modal-risk-info" style="font-size:0.8rem; color:#64748b; margin:8px 0; text-align:center; min-height:22px;">ریسک: — $</div>
-                <button class="modal-btn" onclick="calculateSafeVolumeModal()" style="background:#252a32; margin-bottom:8px;">محاسبه حجم ایمن</button>
-                <button onclick="applyVolumeToMainForm()" style="width:100%; background:#16a34a; color:white; border:none; border-radius:6px; padding:0.7rem; font-weight:600; cursor:pointer; display: flex; align-items: center; justify-content: center; gap: 8px;"><svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg> کپی حجم به فرم اصلی</button>
+            </div>
+            <div id="modal-risk-info" class="modal-info-box">ریسک: — $</div>
+            <div class="modal-actions modal-actions-stack">
+                <button class="modal-btn secondary-btn" onclick="calculateSafeVolumeModal()">محاسبه حجم ایمن</button>
+                <button class="modal-btn primary-btn" onclick="applyVolumeToMainForm()">
+                    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    کپی حجم به فرم اصلی
+                </button>
             </div>
         </div>
+    </div>
+</div>
 
         <!-- Fixed & Organized Pending Order Modal -->
-        <div id="pending-modal" class="modal">
-            <div class="modal-content">
-                <button class="modal-close" onclick="closePendingModal()">✕</button>
-                <h3>
-                    <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 8v4l3 3M3 12a9 9 0 1118 0 9 9 0 01-18 0z"/></svg>
-                    ثبت اوردر پندینگ
-                </h3>
-                
-                <div class="trade-form">
-                    <form id="pending-form">
-                        {% csrf_token %}
-                        
-                        <div class="form-row">
-                            <label>نماد</label>
-                            <select name="symbol" id="pending-symbol" class="trade-input">
-                                {% for item in price_list %}
-                                    <option value="{{ item.symbol }}">{{ item.symbol }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-
-                        <div class="form-row">
-                            <label>نوع اوردر</label>
-                            <select name="order_type" class="trade-input">
-                                <option value="buy_limit">Buy Limit</option>
-                                <option value="sell_limit">Sell Limit</option>
-                                <option value="buy_stop">Buy Stop</option>
-                                <option value="sell_stop">Sell Stop</option>
-                            </select>
-                        </div>
-
-                        <div class="form-row">
-                            <label>حجم</label>
-                            <input type="number" name="volume" id="pending-volume" class="trade-input" step="0.01" min="0.01" required>
-                        </div>
-
-                        <div class="form-row">
-                            <label>قیمت فعال‌سازی</label>
-                            <input type="number" name="entry_price" id="pending-entry" class="trade-input" step="0.00001" required>
-                        </div>
-
-                        <div class="form-row">
-                            <label>استاپ لاس (SL)</label>
-                            <input type="number" name="stop_loss" class="trade-input" step="0.00001">
-                        </div>
-
-                        <div class="form-row">
-                            <label>تیک پروفیت (TP)</label>
-                            <input type="number" name="take_profit" class="trade-input" step="0.00001">
-                        </div>
-                    </form>
-                </div>
-
-                <button type="button" onclick="createPendingOrder()">ثبت اوردر پندینگ</button>
-            </div>
+<div id="pending-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>
+                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 8v4l3 3M3 12a9 9 0 1118 0 9 9 0 01-18 0z"/></svg>
+                ثبت اوردر پندینگ
+            </h3>
+            <button class="modal-close" onclick="closePendingModal()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+            </button>
         </div>
+        <div class="modal-body">
+            <form id="pending-form" class="modal-form">
+                {% csrf_token %}
+                <div class="modal-form-grid">
+                    <div class="modal-form-row">
+                        <label>نماد</label>
+                        <select name="symbol" id="pending-symbol" class="modal-input">
+                            {% for item in price_list %}
+                                <option value="{{ item.symbol }}">{{ item.symbol }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="modal-form-row">
+                        <label>نوع اوردر</label>
+                        <select name="order_type" class="modal-input">
+                            <option value="buy_limit">Buy Limit</option>
+                            <option value="sell_limit">Sell Limit</option>
+                            <option value="buy_stop">Buy Stop</option>
+                            <option value="sell_stop">Sell Stop</option>
+                        </select>
+                    </div>
+                    <div class="modal-form-row">
+                        <label>حجم</label>
+                        <input type="number" name="volume" id="pending-volume" class="modal-input" step="0.01" min="0.01" required>
+                    </div>
+                    <div class="modal-form-row">
+                        <label>قیمت فعال‌سازی</label>
+                        <input type="number" name="entry_price" id="pending-entry" class="modal-input" step="0.00001" required>
+                    </div>
+                    <div class="modal-form-row">
+                        <label>استاپ لاس (SL)</label>
+                        <input type="number" name="stop_loss" class="modal-input" step="0.00001">
+                    </div>
+                    <div class="modal-form-row">
+                        <label>تیک پروفیت (TP)</label>
+                        <input type="number" name="take_profit" class="modal-input" step="0.00001">
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="modal-btn primary-btn" onclick="createPendingOrder()">ثبت اوردر پندینگ</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
     </div>
 
 <script>
