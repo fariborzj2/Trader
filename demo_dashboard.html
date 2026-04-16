@@ -1,0 +1,2077 @@
+
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>proopco Trader</title>
+    <script type="text/javascript" src="https://widget.bitycle.com/static/script/v1/script.js" async id="bitycle-script"></script>
+
+    <style>
+        @font-face {
+            font-family: 'Estedad';
+            src: url('/static/fonts/Estedad-Thin.woff2') format('woff2');
+            font-weight: 100;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Estedad';
+            src: url('/static/fonts/Estedad-ExtraLight.woff2') format('woff2');
+            font-weight: 200;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Estedad';
+            src: url('/static/fonts/Estedad-Light.woff2') format('woff2');
+            font-weight: 300;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Estedad';
+            src: url('/static/fonts/Estedad.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Estedad';
+            src: url('/static/fonts/Estedad-Medium.woff2') format('woff2');
+            font-weight: 500;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Estedad';
+            src: url('/static/fonts/Estedad-SemiBold.woff2') format('woff2');
+            font-weight: 600;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Estedad';
+            src: url('/static/fonts/Estedad-Bold.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Estedad';
+            src: url('/static/fonts/Estedad-ExtraBold.woff2') format('woff2');
+            font-weight: 800;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Estedad';
+            src: url('/static/fonts/Estedad-Black.woff2') format('woff2');
+            font-weight: 900;
+            font-style: normal;
+            font-display: swap;
+        }
+        :root {
+            --bg-body: linear-gradient(180deg, #f9fafb 0%, #e5e7eb 100%);
+            --bg-panel: #ffffff;
+            --bg-card: #f3f4f6;
+            --accent-green: #16a34a;
+            --accent-red: #dc2626;
+            --text-primary: #111827;
+            --text-secondary: #4b5563;
+            --border: #d1d5db;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .dark {
+            --bg-body: linear-gradient(180deg, #0f172a 0%, #1e2937 100%);
+            --bg-panel: #1e2937;
+            --bg-card: #334155;
+            --accent-green: #22c55e;
+            --accent-red: #ef4444;
+            --text-primary: #f8fafc;
+            --text-secondary: #cbd5e1;
+            --border: #475569;
+            --shadow-sm: 0 1px 2px 0 rgb(15 23 42 / 0.3);
+            --shadow-md: 0 4px 6px -1px rgb(15 23 42 / 0.4), 0 2px 4px -2px rgb(15 23 42 / 0.3);
+            --shadow-lg: 0 10px 15px -3px rgb(15 23 42 / 0.5), 0 4px 6px -4px rgb(15 23 42 / 0.4);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Tahoma", sans-serif;
+            background: var(--bg-body);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.4;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: background 0.3s ease;
+        }
+        h1, h2, h3, button, .tab-btn, .symbol-btn, .trade-btn, .account-label {
+            font-family: 'Estedad', sans-serif;
+        }
+
+        .symbol-name, .symbol-price {
+            font-family: 'Estedad', ui-monospace, monospace;
+        }
+
+        .main-container { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+        header {
+            background: var(--bg-panel);
+            padding: 0.5rem 1rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+            flex-shrink: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        h1 { font-size: 1.125rem; color: var(--accent-green); font-weight: 600; letter-spacing: -0.025em; }
+        .logout-btn {
+            background: var(--accent-red);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .logout-btn:hover { background: #b91c1c; transform: scale(1.02); }
+        .theme-toggle { display: flex; align-items: center; gap: 8px; font-size: 1.3rem; cursor: pointer; }
+        .theme-toggle span { font-size: 1rem; color: var(--text-secondary); font-weight: 500; }
+        .top-section { display: flex; flex: 1 1 auto; min-height: 0; overflow: hidden; }
+        .left-panel, .right-panel {
+            width: 18%;
+            background: var(--bg-panel);
+            border: 1px solid var(--border);
+            padding: 0.75rem;
+            overflow-y: auto;
+            box-shadow: var(--shadow-sm);
+            flex-shrink: 0;
+        }
+        .left-panel { border-right: none; }
+        .right-panel { border-left: none; }
+        .chart-section {
+            flex: 1;
+            background: var(--bg-panel);
+            padding: 0.5rem;
+            display: flex;
+            flex-direction: column;
+            border-left: 1px solid var(--border);
+            border-right: 1px solid var(--border);
+            overflow: hidden;
+            min-height: 0;
+        }
+        .symbol-selector {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0.35rem;
+    justify-content: flex-start;   /* تغییر مهم */
+    padding: 0.5rem 0.6rem;
+    background: var(--bg-card);
+    border-radius: 10px;
+    margin-bottom: 0.75rem;
+    border: 1px solid var(--border);
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;   /* اسکرول روان در آیفون */
+}
+
+.symbol-selector::-webkit-scrollbar {
+    display: none;
+}
+
+/* بهبود دکمه‌های نماد در موبایل */
+.symbol-btn {
+    padding: 0.45rem 0.95rem;
+    background: #e5e7eb;
+    border: 1px solid var(--border);
+    border-radius: 9999px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.82rem;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+    min-width: fit-content;
+    color: var(--text-primary);
+    flex-shrink: 0;           /* خیلی مهم */
+}
+
+.dark .symbol-btn {
+    background: #475569;
+    color: #f8fafc;
+}
+
+.symbol-btn.active {
+    background: var(--accent-green);
+    color: white;
+    border-color: var(--accent-green);
+    box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.25);
+}
+        .bottom-section {
+            flex: 0 1 auto;
+            max-height: 56vh;
+            background: var(--bg-panel);
+            border-top: 1px solid var(--border);
+            padding: 0.5rem;
+            overflow-y: auto;
+            box-shadow: var(--shadow-sm);
+        }
+        .mobile-bottom-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-panel);
+            border-top: 1px solid var(--border);
+            box-shadow: var(--shadow-md);
+            z-index: 1100;
+            padding: 6px 0 4px;
+        }
+        .mobile-nav-container { display: flex; justify-content: space-evenly; align-items: center; width: 100%; }
+        .mobile-tab {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            color: var(--text-secondary);
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 4px 0;
+            transition: all 0.2s ease;
+        }
+        .mobile-tab.active { color: var(--accent-green); }
+        .mobile-tab .mobile-icon { width: 28px; height: 28px; margin-bottom: 3px; }
+        .dark .mobile-tab { color: #cbd5e1; }
+        .dark .mobile-tab.active { color: var(--accent-green); }
+        .mobile-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.75);
+            z-index: 1200;
+            align-items: flex-end;
+            justify-content: center;
+        }
+        .mobile-modal-content {
+            background: var(--bg-panel);
+            width: 100%;
+            max-height: 92vh;
+            border-radius: 16px 16px 0 0;
+            box-shadow: var(--shadow-lg);
+            overflow-y: auto;
+            padding: 1.25rem;
+            position: relative;
+        }
+        .mobile-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .mobile-modal-header h3 { margin: 0; font-size: 1.1rem; color: var(--text-primary); }
+        .mobile-modal-close {
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+        .mobile-modal-body { max-height: calc(92vh - 80px); overflow-y: auto; }
+        .tabs { display: flex; justify-content: center; gap: 0.375rem; margin-bottom: 0.5rem; flex-wrap: wrap; }
+        .tab-btn {
+            padding: 0.375rem 0.875rem;
+            background: #f3f4f6;
+            color: var(--text-secondary);
+            border: none;
+            border-radius: 9999px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.8125rem;
+            transition: all 0.2s ease;
+        }
+        .dark .tab-btn { background: #475569; color: #cbd5e1; }
+        .tab-btn:hover { background: #e5e7eb; }
+        .dark .tab-btn:hover { background: #64748b; }
+        .tab-btn.active { background: var(--accent-green); color: #ffffff; box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.2); }
+        .tab-content {
+            display: none;
+            padding: 0.75rem;
+            background: var(--bg-card);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            max-height: 48vh;
+            overflow-y: auto;
+        }
+        .tab-content.active { display: block; }
+        .account-info-box {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.8rem 2.8rem;
+            align-items: center;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 1.1rem 1.4rem;
+            box-shadow: var(--shadow-md);
+        }
+        .dark .account-info-box { background: #334155; border-color: #475569; }
+        .account-info-item { display: flex; align-items: center; gap: 9px; white-space: nowrap; }
+        .account-info-item .account-label {
+            color: #64748b;
+            font-weight: 600;
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .dark .account-info-item .account-label { color: #94a3b8; }
+        .account-info-item span:last-child {
+            font-family: ui-monospace, monospace;
+            font-weight: 700;
+            font-size: 1.08rem;
+            color: #0f172a;
+        }
+        .dark .account-info-item span:last-child { color: #f8fafc; }
+        .account-info-item:not(:last-child)::after {
+            content: '';
+            width: 1px;
+            height: 24px;
+            background: #e2e8f0;
+            margin-right: -1.4rem;
+        }
+        .dark .account-info-item:not(:last-child)::after { background: #475569; }
+        .symbol-table, .history-table, .open-positions-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: 0.875rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+        .symbol-table th, .symbol-table td,
+        .history-table th, .history-table td,
+        .open-positions-table th, .open-positions-table td {
+            padding: 0.5rem 0.625rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+        }
+        .symbol-table th, .history-table th, .open-positions-table th {
+            background: #f3f4f6;
+            color: var(--accent-green);
+            font-weight: 600;
+        }
+        .dark .symbol-table th, .dark .history-table th, .dark .open-positions-table th { background: #475569; color: #cbd5e1; }
+        .trade-form {
+            background: var(--bg-card);
+            border-radius: 8px;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-md);
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .trade-form label { font-size: 0.75rem; color: var(--text-secondary); font-weight: 600; }
+        .trade-input {
+            padding: 0.5rem 0.75rem;
+            background: #f9fafb;
+            border: 1px solid #d1d5db;
+            color: var(--text-primary);
+            border-radius: 6px;
+            font-family: ui-monospace, monospace;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        .dark .trade-input { background: #1e2937; border-color: #475569; color: #f8fafc; }
+        .trade-input:focus { outline: none; border-color: var(--accent-green); box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.15); }
+        .trade-btn {
+            padding: 0.5rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .trade-btn.buy { background: var(--accent-green); color: white; }
+        .trade-btn.sell { background: var(--accent-red); color: white; }
+        .close-btn {
+            background: var(--accent-red);
+            color: white;
+            border: none;
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        .partial-btn {
+            background: #eab308;
+            color: #fff;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .edit-btn {
+            background: #3b82f6;
+            color: #fff;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .price-up { animation: priceUp 200ms ease-out; }
+        .price-down { animation: priceDown 200ms ease-out; }
+        @keyframes priceUp { 0% { color: #4ade80; transform: scale(1.05); } 100% { color: var(--text-primary); transform: scale(1); } }
+        @keyframes priceDown { 0% { color: #f87171; transform: scale(1.05); } 100% { color: var(--text-primary); transform: scale(1); } }
+
+        /* ====================== IMPROVED & ORGANIZED PENDING ORDER MODAL ====================== */
+        #pending-modal .modal-content {
+            width: 520px;
+            max-width: 95vw;
+            border-radius: 24px;
+            padding: 2.25rem 2rem;
+            box-shadow: var(--shadow-lg);
+            background: var(--bg-panel);
+        }
+        #pending-modal h3 {
+            font-size: 1.5rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--accent-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            font-weight: 700;
+        }
+        #pending-modal .trade-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.4rem;
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid var(--border);
+        }
+        #pending-modal .form-row {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+        #pending-modal label {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+        #pending-modal .trade-input,
+        #pending-modal select.trade-input {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            border-radius: 12px;
+            font-size: 1rem;
+            border: 1px solid var(--border);
+            background: #fff;
+            transition: all 0.2s ease;
+        }
+        .dark #pending-modal .trade-input,
+        .dark #pending-modal select.trade-input {
+            background: #1e2937;
+        }
+        #pending-modal .trade-input:focus,
+        #pending-modal select.trade-input:focus {
+            border-color: var(--accent-green);
+            box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.15);
+        }
+        #pending-modal button[type="button"] {
+            width: 100%;
+            margin-top: 1.25rem;
+            background: linear-gradient(90deg, #16a34a, #22c55e);
+            color: white;
+            padding: 1.1rem;
+            font-size: 1.15rem;
+            font-weight: 700;
+            border-radius: 14px;
+            border: none;
+            box-shadow: 0 6px 20px rgba(22, 163, 74, 0.35);
+            transition: all 0.3s ease;
+        }
+        #pending-modal button[type="button"]:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(22, 163, 74, 0.45);
+        }
+
+        /* ====================== HISTORY ROW COLORING ====================== */
+        .history-table tr.profit-row { background: rgba(22, 163, 74, 0.08) !important; }
+        .history-table tr.loss-row { background: rgba(220, 38, 38, 0.08) !important; }
+        .history-table tr.zero-row { background: rgba(100, 116, 139, 0.08) !important; }
+        .history-table td.pl-positive { color: #16a34a !important; font-weight: 700; }
+        .history-table td.pl-negative { color: #dc2626 !important; font-weight: 700; }
+        .history-table td.pl-zero { color: #64748b !important; font-weight: 600; }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.75);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background: var(--bg-panel);
+            width: 420px;
+            max-width: 92%;
+            border-radius: 16px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            color: var(--text-primary);
+        }
+        .modal-close {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+        .modal-input {
+            width: 100%;
+            padding: 0.6rem 0.8rem;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-family: ui-monospace, monospace;
+            background: #f9fafb;
+            color: var(--text-primary);
+        }
+        .dark .modal-input { background: #1e2937; color: #f8fafc; }
+        .modal-btn {
+            width: 100%;
+            padding: 0.7rem;
+            background: var(--accent-green);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        @media (max-width: 768px) {
+            .bottom-section { display: none !important; }
+            .mobile-bottom-nav { display: flex !important; }
+            .left-panel, .right-panel, .chart-section { width: 100% !important; min-height: 420px; }
+            .top-section { flex-direction: column; overflow-y: auto; }
+            .chart-section { order: 2; min-height: 520px; }
+            .left-panel { order: 1; }
+            .right-panel { order: 3; }
+            #pending-modal .modal-content { width: 100%; max-width: 100%; border-radius: 20px 20px 0 0; padding: 1.75rem; }
+        }
+
+      /* ====================== IMPROVED SYMBOL PRICE TABLE - RESPONSIVE ====================== */
+
+.symbol-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+    table-layout: fixed;           /* ← خیلی مهم برای کنترل عرض ستون‌ها */
+}
+
+.symbol-table thead th {
+    background: linear-gradient(90deg, var(--accent-green), #10b981);
+    color: white;
+    font-weight: 700;
+    padding: 0.85rem 0.65rem;
+    font-size: 0.81rem;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* تنظیم عرض ستون‌ها به صورت درصد (جمعش دقیقاً 100% بشه) */
+.symbol-table th,
+.symbol-table td {
+    padding: 0.95rem 0.65rem;
+    font-size: 0.9rem;
+    border-bottom: 1px solid var(--border);
+}
+
+/* ستون نماد - بیشترین فضا رو بگیره */
+.symbol-table .symbol-name {
+    font-weight: 700;
+    color: var(--text-primary);
+    text-align: right;
+    font-size: 0.93rem;
+    padding-right: 1rem;
+    width: 38%;                    /* تنظیم شد */
+    min-width: 110px;
+}
+
+/* ستون قیمت */
+.symbol-table .symbol-price {
+    font-family: ui-monospace, 'Cascadia Mono', 'Segoe UI Mono', monospace;
+    font-weight: 700;
+    font-size: 1.02rem;
+    text-align: left;
+    color: #0f172a;
+    direction: ltr;
+    width: 22%;                    /* تنظیم شد */
+    min-width: 95px;
+}
+
+.dark .symbol-table .symbol-price {
+    color: #e0f2fe;
+}
+
+/* اگر ستون‌های دیگه داری (مثل حجم، تغییر درصد و ...) */
+.symbol-table .symbol-change {
+    width: 20%;
+    text-align: center;
+    font-weight: 600;
+}
+
+.symbol-table .symbol-volume {
+    width: 20%;
+    text-align: left;
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+}
+
+/* انیمیشن تغییر قیمت (بدون تغییر) */
+.symbol-price.price-up {
+    color: var(--accent-green) !important;
+    animation: priceFlashUp 400ms ease-out;
+}
+
+.symbol-price.price-down {
+    color: var(--accent-red) !important;
+    animation: priceFlashDown 400ms ease-out;
+}
+
+@keyframes priceFlashUp {
+    0% { background: rgba(22, 163, 74, 0.25); transform: scale(1.06); }
+    100% { background: transparent; transform: scale(1); }
+}
+
+@keyframes priceFlashDown {
+    0% { background: rgba(220, 38, 38, 0.25); transform: scale(1.06); }
+    100% { background: transparent; transform: scale(1); }
+}
+
+/* Hover و افکت‌ها */
+.symbol-table tbody tr {
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.symbol-table tbody tr:hover {
+    background: var(--bg-card);
+    transform: translateX(4px);
+    box-shadow: inset 4px 0 0 var(--accent-green);
+}
+
+/* آخرین ردیف بدون مرز */
+.symbol-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* ====================== ریسپانسیو قوی‌تر ====================== */
+@media (max-width: 1024px) {
+    .symbol-table th,
+    .symbol-table td {
+        padding: 0.9rem 0.6rem;
+        font-size: 0.88rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .symbol-table {
+        border-radius: 10px;
+    }
+
+    .symbol-table th,
+    .symbol-table td {
+        padding: 1rem 0.55rem;
+        font-size: 0.92rem;
+    }
+
+    .symbol-table .symbol-name {
+        font-size: 1rem;
+        width: 40%;
+    }
+
+    .symbol-table .symbol-price {
+        font-size: 1.05rem;
+        width: 25%;
+    }
+}
+
+/* برای موبایل خیلی کوچک (کمتر از 480px) */
+@media (max-width: 480px) {
+    .symbol-table .symbol-name {
+        width: 45%;
+        padding-right: 0.8rem;
+    }
+
+    .symbol-table .symbol-price {
+        width: 28%;
+        font-size: 1rem;
+    }
+
+    /* اگر ستون حجم یا تغییر خیلی فشرده شد، می‌تونی مخفی کنی یا فونت رو کوچکتر کنی */
+    .symbol-table .symbol-volume,
+    .symbol-table .symbol-change {
+        font-size: 0.82rem;
+    }
+}
+
+
+/* بهبود جدول نمادها در موبایل */
+@media (max-width: 768px) {
+    .right-panel {
+        padding: 0.5rem;
+    }
+
+    .symbol-table {
+        font-size: 0.85rem;
+    }
+
+    .symbol-table .symbol-name {
+        width: 48%;
+        font-size: 0.95rem;
+        padding-right: 0.8rem;
+    }
+
+    .symbol-table .symbol-price {
+        width: 52%;
+        font-size: 1.05rem;
+    }
+
+    /* مخفی کردن هدر جدول در موبایل برای صرفه‌جویی در فضا */
+    .symbol-table thead {
+        display: none;
+    }
+
+    .symbol-table tr {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.75rem 0.6rem;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .symbol-table td {
+        border: none;
+        padding: 0;
+        text-align: right;
+    }
+
+    .symbol-table .symbol-name {
+        text-align: right;
+    }
+
+    .symbol-table .symbol-price {
+        text-align: left;
+        direction: ltr;
+        font-weight: 700;
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="main-container">
+      <header>
+    <div style="display: flex; align-items: center; gap: 12px;">
+        <!-- لوگو -->
+        <img src="/static/images/logo.png"
+             alt="Proopco Trader Logo"
+             style="height: 45px; width: auto; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));">
+
+        <!-- عنوان -->
+        <h1 style="margin: 0;
+                   font-size: 1.45rem;
+                   font-weight: 800;
+                   letter-spacing: -0.03em;
+                   background: linear-gradient(90deg, #facc15, #eab308, #ca8a04);
+                   -webkit-background-clip: text;
+                   -webkit-text-fill-color: transparent;
+                   font-family: 'Estedad', sans-serif;">
+            Proopco Trader
+        </h1>
+    </div>
+
+    <!-- بخش راست هدر: تم + خروج -->
+    <div style="display: flex; align-items: center; gap: 16px;">
+        <div class="theme-toggle" onclick="toggleTheme()" title="تغییر تم" style="font-size: 1.4rem; cursor: pointer;">
+            <span id="theme-icon">☀️</span>
+        </div>
+        <a href="/logout/" class="logout-btn">خروج</a>
+    </div>
+</header>
+
+        <div class="top-section">
+            <!-- Left Panel -->
+            <div class="left-panel">
+                <form class="trade-form">
+
+                    <label>نماد:</label>
+                    <select name="symbol" id="trade-symbol" class="trade-input">
+
+                            <option value="US30">US30</option>
+
+                            <option value="XAUUSD">XAUUSD</option>
+
+                            <option value="EURUSD">EURUSD</option>
+
+                            <option value="AUDUSD">AUDUSD</option>
+
+                            <option value="NZDUSD">NZDUSD</option>
+
+                            <option value="USDJPY">USDJPY</option>
+
+                            <option value="NAS100">NAS100</option>
+
+                            <option value="USOIL">USOIL</option>
+
+                            <option value="ETHUSDT">ETHUSDT</option>
+
+                    </select>
+                    <label>حجم:</label>
+                    <input class="trade-input" type="number" name="volume" id="volume-input" step="0.01" min="0.01">
+                    <label>SL:</label>
+                    <input class="trade-input" type="number" name="stop_loss" id="sl-input" step="0.00001">
+                    <label>TP:</label>
+                    <input class="trade-input" type="number" name="take_profit" step="0.00001">
+                    <input type="hidden" name="type" id="trade-type" value="buy">
+                    <button class="trade-btn buy" type="button" onclick="setTradeType('buy')">خرید</button>
+                    <button class="trade-btn sell" type="button" onclick="setTradeType('sell')">فروش</button>
+                </form>
+
+                <button type="button" onclick="openRiskModal()"
+                        style="margin-top: 12px; width: 100%; background: #3b82f6; color: white; border: none; border-radius: 8px; padding: 0.65rem; font-weight: 600; font-size: 0.9rem; cursor: pointer;">
+                    📊 اکسپرت مدیریت سرمایه
+                </button>
+
+                <button type="button" onclick="openPendingModal()"
+                        style="margin-top: 8px; width: 100%; background: #8b5cf6; color: white; border: none; border-radius: 8px; padding: 0.65rem; font-weight: 600; font-size: 0.9rem; cursor: pointer;">
+                    📍 اوردر پندینگ
+                </button>
+
+                <div id="trade-messages"></div>
+
+            </div>
+
+            <!-- Chart Section -->
+            <div class="chart-section">
+                <div class="symbol-selector" id="symbol-selector">
+    <button class="symbol-btn active" data-symbol="US30">US30</button>
+    <button class="symbol-btn" data-symbol="XAUUSD">XAUUSD</button>
+    <button class="symbol-btn" data-symbol="EURUSD">EURUSD</button>
+    <button class="symbol-btn" data-symbol="AUDUSD">AUDUSD</button>
+    <button class="symbol-btn" data-symbol="NZDUSD">NZDUSD</button>
+    <button class="symbol-btn" data-symbol="USDJPY">USDJPY</button>
+    <button class="symbol-btn" data-symbol="NAS100_USD">NAS100</button>
+    <button class="symbol-btn" data-symbol="FXCM_USOIL">USOIL</button>
+    <button class="symbol-btn" data-symbol="ETHUSDT">ETHUSDT</button>
+</div>
+                <div style="width: 100%; flex: 1; min-height: 0; display: flex; flex-direction: column; align-items: center; background: var(--bg-panel); border-radius: 8px; overflow: hidden; box-shadow: var(--shadow-lg);">
+                    <div id="bitycle-ac-widget" style="width: 100%; height: 100%; min-height: 0;"></div>
+                </div>
+            </div>
+
+            <!-- Right Panel -->
+            <div class="right-panel">
+                <table class="symbol-table">
+                    <thead>
+                        <tr>
+                            <th>نماد</th>
+                            <th>قیمت</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr class="symbol-item" onclick="loadBitycleChart('US30')">
+                            <td class="symbol-name">US30</td>
+                            <td class="symbol-price" id="price-US30">38500.500000</td>
+                        </tr>
+
+                        <tr class="symbol-item" onclick="loadBitycleChart('XAUUSD')">
+                            <td class="symbol-name">XAUUSD</td>
+                            <td class="symbol-price" id="price-XAUUSD">2025.300000</td>
+                        </tr>
+
+                        <tr class="symbol-item" onclick="loadBitycleChart('EURUSD')">
+                            <td class="symbol-name">EURUSD</td>
+                            <td class="symbol-price" id="price-EURUSD">1.085000</td>
+                        </tr>
+
+                        <tr class="symbol-item" onclick="loadBitycleChart('AUDUSD')">
+                            <td class="symbol-name">AUDUSD</td>
+                            <td class="symbol-price" id="price-AUDUSD">0.654000</td>
+                        </tr>
+
+                        <tr class="symbol-item" onclick="loadBitycleChart('NZDUSD')">
+                            <td class="symbol-name">NZDUSD</td>
+                            <td class="symbol-price" id="price-NZDUSD">0.612000</td>
+                        </tr>
+
+                        <tr class="symbol-item" onclick="loadBitycleChart('USDJPY')">
+                            <td class="symbol-name">USDJPY</td>
+                            <td class="symbol-price" id="price-USDJPY">150.200000</td>
+                        </tr>
+
+                        <tr class="symbol-item" onclick="loadBitycleChart('NAS100')">
+                            <td class="symbol-name">NAS100</td>
+                            <td class="symbol-price" id="price-NAS100">17800.200000</td>
+                        </tr>
+
+                        <tr class="symbol-item" onclick="loadBitycleChart('USOIL')">
+                            <td class="symbol-name">USOIL</td>
+                            <td class="symbol-price" id="price-USOIL">78.500000</td>
+                        </tr>
+
+                        <tr class="symbol-item" onclick="loadBitycleChart('ETHUSDT')">
+                            <td class="symbol-name">ETHUSDT</td>
+                            <td class="symbol-price" id="price-ETHUSDT">3050.800000</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Desktop Bottom Section -->
+        <div class="bottom-section" id="desktop-bottom">
+            <div class="tabs">
+                <button class="tab-btn active" onclick="openTab('account')">حساب</button>
+                <button class="tab-btn" onclick="openTab('open_positions')">پوزیشن‌ها</button>
+                <button class="tab-btn" onclick="openTab('history')">هیستوری</button>
+                <button class="tab-btn" onclick="openTab('pending_orders')">اوردرهای پندینگ</button>
+                <button class="tab-btn" onclick="openTab('symbol_settings')">تنظیمات نمادها</button>
+                <button class="tab-btn" onclick="openTab('analysis')">آنالیز</button>
+            </div>
+
+            <!-- Account Tab -->
+            <div id="account" class="tab-content active">
+                <div class="account-info-box">
+                    <div class="account-info-item"><span class="account-label">شماره حساب:</span><span>123456789</span></div>
+                    <div class="account-info-item"><span class="account-label">نام:</span><span>علی رضایی</span></div>
+                    <div class="account-info-item"><span class="account-label">بالانس:</span><span id="balance-value">10000.00 $</span></div>
+                    <div class="account-info-item"><span class="account-label">اکویتی:</span><span id="equity-value">10150.50 $</span></div>
+                    <div class="account-info-item"><span class="account-label">مارجین:</span><span id="margin-used-value">500.00 $</span></div>
+                    <div class="account-info-item"><span class="account-label">وین ریت:</span><span>65.50 %</span></div>
+                </div>
+            </div>
+
+            <!-- Open Positions Tab -->
+            <div id="open_positions" class="tab-content">
+                <table class="open-positions-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th><th>نماد</th><th>نوع</th><th>حجم</th><th>باز</th><th>فعلی</th><th>PL</th><th>SL</th><th>TP</th><th>زمان</th><th>عملیات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr data-symbol="US30" data-type="buy" data-volume="0.5" data-open-price="38400.0">
+                            <td>101</td>
+                            <td>US30</td>
+                            <td>buy</td>
+                            <td class="volume-cell">0.50000</td>
+                            <td>38400.000000</td>
+                            <td id="current-price-US30"></td>
+                            <td id="pl-101">0.00</td>
+                            <td>38000.00000</td>
+                            <td>39000.00000</td>
+                            <td>2023-10-27 10:30:00</td>
+                            <td>
+                                <div class="operations">
+                                    <button class="partial-btn" onclick="partialClosePosition(101, 0.25)">۲۵٪</button>
+                                    <button class="partial-btn" onclick="partialClosePosition(101, 0.5)">۵۰٪</button>
+                                    <button class="partial-btn" onclick="partialClosePosition(101, 0.75)">۷۵٪</button>
+                                    <button class="close-btn" onclick="closePosition(101)">۱۰۰٪</button>
+                                    <button class="edit-btn" onclick="openEditModal(101, '38000.0', '39000.0')">ویرایش</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr data-symbol="XAUUSD" data-type="sell" data-volume="1.0" data-open-price="2030.0">
+                            <td>102</td>
+                            <td>XAUUSD</td>
+                            <td>sell</td>
+                            <td class="volume-cell">1.00000</td>
+                            <td>2030.000000</td>
+                            <td id="current-price-XAUUSD"></td>
+                            <td id="pl-102">0.00</td>
+                            <td>2050.00000</td>
+                            <td>2000.00000</td>
+                            <td>2023-10-27 11:15:00</td>
+                            <td>
+                                <div class="operations">
+                                    <button class="partial-btn" onclick="partialClosePosition(102, 0.25)">۲۵٪</button>
+                                    <button class="partial-btn" onclick="partialClosePosition(102, 0.5)">۵۰٪</button>
+                                    <button class="partial-btn" onclick="partialClosePosition(102, 0.75)">۷۵٪</button>
+                                    <button class="close-btn" onclick="closePosition(102)">۱۰۰٪</button>
+                                    <button class="edit-btn" onclick="openEditModal(102, '2050.0', '2000.0')">ویرایش</button>
+                                </div>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pending Orders Tab -->
+            <div id="pending_orders" class="tab-content">
+                <h3 style="margin-bottom: 1rem; color: var(--accent-green);">اوردرهای پندینگ فعال</h3>
+                <table class="history-table" id="pending-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>نماد</th>
+                            <th>نوع</th>
+                            <th>حجم</th>
+                            <th>قیمت ورود</th>
+                            <th>SL</th>
+                            <th>TP</th>
+                            <th>زمان ثبت</th>
+                            <th>عملیات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr id="pending-row-201">
+                            <td>201</td>
+                            <td>EURUSD</td>
+                            <td>Buy Limit</td>
+                            <td>2.00</td>
+                            <td>1.08000</td>
+                            <td>1.07500</td>
+                            <td>1.09000</td>
+                            <td></td>
+                            <td><button class="close-btn" onclick="cancelPendingOrder(201)">لغو</button></td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- History Tab -->
+            <div id="history" class="tab-content">
+                <table class="history-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>نماد</th>
+                            <th>نوع</th>
+                            <th>حجم بسته شده</th>
+                            <th>قیمت باز</th>
+                            <th>SL</th>
+                            <th>TP</th>
+                            <th>قیمت بسته</th>
+                            <th>PL</th>
+                            <th>کمیسیون</th>
+                            <th>زمان باز شدن</th>
+                            <th>زمان بسته شدن</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr class="profit-row">
+                            <td>50</td>
+                            <td>US30</td>
+                            <td>buy</td>
+                            <td>1.00</td>
+                            <td>38000.000000</td>
+                            <td>37500.00000</td>
+                            <td>38500.00000</td>
+                            <td>38500.000000</td>
+                            <td class="pl-positive">500.00</td>
+                            <td>6.00</td>
+                            <td></td>
+                            <td>—</td>
+                        </tr>
+
+                        <tr class="loss-row">
+                            <td>51</td>
+                            <td>USDJPY</td>
+                            <td>sell</td>
+                            <td>2.00</td>
+                            <td>150.000000</td>
+                            <td>151.00000</td>
+                            <td>148.00000</td>
+                            <td>150.500000</td>
+                            <td class="pl-negative">-100.00</td>
+                            <td>12.00</td>
+                            <td></td>
+                            <td>—</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Symbol Settings Tab -->
+            <div id="symbol_settings" class="tab-content">
+                <table class="symbol-table">
+                    <thead>
+                        <tr>
+                            <th>نماد</th>
+                            <th>اسپرد</th>
+                            <th>کمیسیون</th>
+                            <th>سواپ لانگ</th>
+                            <th>سواپ شورت</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr>
+                            <td class="symbol-name">US30</td>
+                            <td>1.50</td>
+                            <td>3.00</td>
+                            <td>-5.00</td>
+                            <td>2.00</td>
+                        </tr>
+
+                        <tr>
+                            <td class="symbol-name">XAUUSD</td>
+                            <td>2.00</td>
+                            <td>3.00</td>
+                            <td>-10.00</td>
+                            <td>4.00</td>
+                        </tr>
+
+                        <tr>
+                            <td class="symbol-name">EURUSD</td>
+                            <td>0.80</td>
+                            <td>3.00</td>
+                            <td>-6.00</td>
+                            <td>1.00</td>
+                        </tr>
+
+                        <tr>
+                            <td class="symbol-name">AUDUSD</td>
+                            <td>0.90</td>
+                            <td>3.00</td>
+                            <td>-4.00</td>
+                            <td>0.50</td>
+                        </tr>
+
+                        <tr>
+                            <td class="symbol-name">NZDUSD</td>
+                            <td>1.00</td>
+                            <td>3.00</td>
+                            <td>-3.50</td>
+                            <td>0.50</td>
+                        </tr>
+
+                        <tr>
+                            <td class="symbol-name">USDJPY</td>
+                            <td>1.20</td>
+                            <td>3.00</td>
+                            <td>5.00</td>
+                            <td>-15.00</td>
+                        </tr>
+
+                        <tr>
+                            <td class="symbol-name">NAS100</td>
+                            <td>1.50</td>
+                            <td>3.00</td>
+                            <td>-4.00</td>
+                            <td>1.50</td>
+                        </tr>
+
+                        <tr>
+                            <td class="symbol-name">USOIL</td>
+                            <td>2.50</td>
+                            <td>3.00</td>
+                            <td>-8.00</td>
+                            <td>2.50</td>
+                        </tr>
+
+                        <tr>
+                            <td class="symbol-name">ETHUSDT</td>
+                            <td>1.00</td>
+                            <td>0.00</td>
+                            <td>-15.00</td>
+                            <td>-15.00</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Analysis Tab -->
+            <div id="analysis" class="tab-content">
+                <div class="account-info-box">
+                    <span class="account-label">وضعیت حساب:</span> <span>Active</span>
+
+                        <span class="account-label">حد دراودان روزانه:</span> <span>500.00 $</span>
+
+
+                        <span class="account-label">حد دراودان کل:</span> <span>2000.00 $</span>
+
+
+                        <span class="account-label">حد ریسک شناور:</span> <span>1000.00 $</span>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Bottom Nav -->
+        <div class="mobile-bottom-nav" id="mobile-bottom-nav">
+            <div class="mobile-nav-container">
+                <div class="mobile-tab active" onclick="openMobileModal('account')">
+                    <svg class="mobile-icon" xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M3 10h18M7 3v18M17 3v18M3 6h18a2 2 0 012 2v10a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2z"/></svg>
+                    <span>حساب</span>
+                </div>
+                <div class="mobile-tab" onclick="openMobileModal('open_positions')">
+                    <svg class="mobile-icon" xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                    <span>پوزیشن‌ها</span>
+                </div>
+                <div class="mobile-tab" onclick="openMobileModal('history')">
+                    <svg class="mobile-icon" xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M12 8v4l3 3M3 12a9 9 0 1118 0 9 9 0 01-18 0z"/></svg>
+                    <span>هیستوری</span>
+                </div>
+                <div class="mobile-tab" onclick="openMobileModal('pending_orders')">
+                    <svg class="mobile-icon" xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    <span>پندینگ</span>
+                </div>
+                <div class="mobile-tab" onclick="openMobileModal('symbol_settings')">
+                    <svg class="mobile-icon" xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+                    <span>تنظیمات</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Modal -->
+        <div id="mobile-modal" class="mobile-modal">
+            <div class="mobile-modal-content">
+                <div class="mobile-modal-header">
+                    <h3 id="mobile-modal-title">عنوان</h3>
+                    <button class="mobile-modal-close" onclick="closeMobileModal()">✕</button>
+                </div>
+                <div class="mobile-modal-body" id="mobile-modal-body"></div>
+            </div>
+        </div>
+
+        <!-- Edit SL/TP Modal -->
+        <div id="edit-modal" class="modal">
+            <div class="modal-content">
+                <button class="modal-close" onclick="closeEditModal()">×</button>
+                <h3>ویرایش استاپ لاس و تیک پروفیت</h3>
+                <input type="hidden" id="edit-pos-id">
+                <label style="display:block;margin:8px 0 4px;font-size:0.8rem;color:#64748b;">استاپ لاس (SL)</label>
+                <input type="number" id="modal-sl" step="0.00001" class="modal-input" placeholder="مثلاً 1.08500">
+                <label style="display:block;margin:8px 0 4px;font-size:0.8rem;color:#64748b;">تیک پروفیت (TP)</label>
+                <input type="number" id="modal-tp" step="0.00001" class="modal-input" placeholder="مثلاً 1.09500">
+                <button class="modal-btn" onclick="saveEditPosition()">ذخیره تغییرات</button>
+            </div>
+        </div>
+
+        <!-- Risk Expert Modal -->
+        <div id="risk-modal" class="modal">
+            <div class="modal-content">
+                <button class="modal-close" onclick="closeRiskModal()">×</button>
+                <h3>📊 اکسپرت مدیریت سرمایه</h3>
+                <label style="display:block;margin:8px 0 4px;font-size:0.8rem;color:#64748b;">ریسک درصد (%)</label>
+                <input type="number" id="modal-risk-percent" class="modal-input" value="1" step="0.1" min="0.1" max="5">
+                <label style="display:block;margin:8px 0 4px;font-size:0.8rem;color:#64748b;">استاپ لاس (SL)</label>
+                <input type="number" id="modal-sl-input" class="modal-input" step="0.00001" placeholder="مثلاً 1.08500">
+                <div id="modal-risk-info" style="font-size:0.8rem; color:#64748b; margin:8px 0; text-align:center; min-height:22px;">ریسک: — $</div>
+                <button class="modal-btn" onclick="calculateSafeVolumeModal()" style="background:#3b82f6; margin-bottom:8px;">محاسبه حجم ایمن</button>
+                <button onclick="applyVolumeToMainForm()" style="width:100%; background:#16a34a; color:white; border:none; border-radius:6px; padding:0.7rem; font-weight:600; cursor:pointer;">✅ کپی حجم به فرم اصلی</button>
+            </div>
+        </div>
+
+        <!-- Fixed & Organized Pending Order Modal -->
+        <div id="pending-modal" class="modal">
+            <div class="modal-content">
+                <button class="modal-close" onclick="closePendingModal()">✕</button>
+                <h3>
+                    <svg width="28" height="28" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M12 8v4l3 3M3 12a9 9 0 1118 0 9 9 0 01-18 0z"/></svg>
+                    ثبت اوردر پندینگ
+                </h3>
+
+                <div class="trade-form">
+                    <form id="pending-form">
+
+
+                        <div class="form-row">
+                            <label>نماد</label>
+                            <select name="symbol" id="pending-symbol" class="trade-input">
+
+                                    <option value="US30">US30</option>
+
+                                    <option value="XAUUSD">XAUUSD</option>
+
+                                    <option value="EURUSD">EURUSD</option>
+
+                                    <option value="AUDUSD">AUDUSD</option>
+
+                                    <option value="NZDUSD">NZDUSD</option>
+
+                                    <option value="USDJPY">USDJPY</option>
+
+                                    <option value="NAS100">NAS100</option>
+
+                                    <option value="USOIL">USOIL</option>
+
+                                    <option value="ETHUSDT">ETHUSDT</option>
+
+                            </select>
+                        </div>
+
+                        <div class="form-row">
+                            <label>نوع اوردر</label>
+                            <select name="order_type" class="trade-input">
+                                <option value="buy_limit">Buy Limit</option>
+                                <option value="sell_limit">Sell Limit</option>
+                                <option value="buy_stop">Buy Stop</option>
+                                <option value="sell_stop">Sell Stop</option>
+                            </select>
+                        </div>
+
+                        <div class="form-row">
+                            <label>حجم</label>
+                            <input type="number" name="volume" id="pending-volume" class="trade-input" step="0.01" min="0.01" required>
+                        </div>
+
+                        <div class="form-row">
+                            <label>قیمت فعال‌سازی</label>
+                            <input type="number" name="entry_price" id="pending-entry" class="trade-input" step="0.00001" required>
+                        </div>
+
+                        <div class="form-row">
+                            <label>استاپ لاس (SL)</label>
+                            <input type="number" name="stop_loss" class="trade-input" step="0.00001">
+                        </div>
+
+                        <div class="form-row">
+                            <label>تیک پروفیت (TP)</label>
+                            <input type="number" name="take_profit" class="trade-input" step="0.00001">
+                        </div>
+                    </form>
+                </div>
+
+                <button type="button" onclick="createPendingOrder()">ثبت اوردر پندینگ</button>
+            </div>
+        </div>
+    </div>
+
+<script>
+    // ====================== WebSocket Helper with Auto-Reconnect ======================
+    function createReconnectingWebSocket(url, onMessageCallback, reconnectInterval = 1500) {
+        let ws = null;
+        let reconnectTimer = null;
+
+        function connect() {
+            ws = new WebSocket(url);
+
+            ws.onopen = () => {
+                console.log(`✅ WebSocket متصل شد: ${url}`);
+                if (reconnectTimer) clearTimeout(reconnectTimer);
+            };
+
+            ws.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                onMessageCallback(data);
+            };
+
+            ws.onclose = () => {
+                console.log(`❌ WebSocket قطع شد: ${url} → تلاش برای اتصال مجدد...`);
+                reconnectTimer = setTimeout(() => connect(), reconnectInterval);
+            };
+
+            ws.onerror = (err) => console.error(`WebSocket خطا: ${url}`, err);
+        }
+
+        connect();
+        return ws;
+    }
+
+    // ====================== Mapping نمادها برای Bitycle ======================
+    const symbolMap = {
+        'FXCM_US30': 'US30',
+        'XAU_USD': 'XAUUSD',
+        'FXCM_EURUSD': 'EURUSD',
+        'FXCM_AUDUSD': 'AUDUSD',
+        'FXCM_NZDUSD': 'NZDUSD',
+        'FXCM_USDJPY': 'USDJPY',
+        'NAS100_USD': 'NAS100',
+        'FXCM_USOIL': 'USOIL',
+        'ETHUSDT': 'ETHUSDT'
+    };
+
+    function getBitycleSymbol(originalSymbol) {
+        return symbolMap[originalSymbol] || originalSymbol;
+    }
+
+    // ====================== Theme Management ======================
+    let currentMode = 'light';
+
+    function applyTheme(mode) {
+        if (mode === 'dark') {
+            document.body.classList.add('dark');
+            currentMode = 'dark';
+            document.getElementById('theme-icon').textContent = '☀️';
+        } else {
+            document.body.classList.remove('dark');
+            currentMode = 'light';
+            document.getElementById('theme-icon').textContent = '🌙';
+        }
+        localStorage.setItem('apex-theme', mode);
+    }
+
+    function toggleTheme() {
+        const newMode = currentMode === 'light' ? 'dark' : 'light';
+        applyTheme(newMode);
+        const activeSymbolBtn = document.querySelector('#symbol-selector .symbol-btn.active');
+        if (activeSymbolBtn) {
+            loadBitycleChart(activeSymbolBtn.dataset.symbol);
+        }
+    }
+
+    // ====================== Bitycle Widget ======================
+let currentBitycleSymbol = 'US30';
+
+function loadBitycleChart(symbol) {
+    if (!symbol) return;
+
+    const widgetSymbol = getBitycleSymbol(symbol);
+    currentBitycleSymbol = widgetSymbol;
+
+    // آپدیت چارت
+    const widgetContainer = document.getElementById('bitycle-ac-widget');
+    widgetContainer.innerHTML = '';
+
+    const script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = 'https://widget.bitycle.com/static/script/v1/script.js';
+    script.async = true;
+    script.id = 'bitycle-script';
+
+    const config = {
+        id: "bitycle-ac-widget",
+        type: "ac",
+        symbol: widgetSymbol,
+        mode: currentMode
+    };
+    script.innerHTML = JSON.stringify(config);
+    widgetContainer.appendChild(script);
+
+    // فعال کردن دکمه بالای چارت
+    document.querySelectorAll('#symbol-selector .symbol-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.symbol === symbol);
+    });
+
+    // آپدیت select فرم معامله (دو طرفه کردن)
+    const tradeSelect = document.getElementById('trade-symbol');
+    if (tradeSelect) {
+        tradeSelect.value = symbol;
+    }
+
+    console.log(`📊 چارت تغییر کرد به: ${symbol} | ویجت: ${widgetSymbol}`);
+}
+    // ====================== Tab Switching (Desktop) ======================
+    function openTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+        const tab = document.getElementById(tabId);
+        if (tab) tab.classList.add('active');
+        if (event && event.target) event.target.classList.add('active');
+    }
+
+    // ====================== Mobile Modal Functions ======================
+    function openMobileModal(tabId) {
+        document.querySelectorAll('.mobile-tab').forEach(t => t.classList.remove('active'));
+        const activeTab = Array.from(document.querySelectorAll('.mobile-tab')).find(tab =>
+            tab.getAttribute('onclick').includes(`'${tabId}'`)
+        );
+        if (activeTab) activeTab.classList.add('active');
+
+        const desktopContent = document.getElementById(tabId);
+        if (!desktopContent) return;
+
+        const titles = {
+            'account': 'حساب کاربری',
+            'open_positions': 'پوزیشن‌های باز',
+            'history': 'تاریخچه معاملات',
+            'pending_orders': 'اوردرهای پندینگ',
+            'symbol_settings': 'تنظیمات نمادها',
+            'analysis': 'آنالیز حساب'
+        };
+        document.getElementById('mobile-modal-title').innerHTML = titles[tabId] || 'جزئیات';
+
+        const modalBody = document.getElementById('mobile-modal-body');
+        modalBody.innerHTML = desktopContent.innerHTML;
+
+        document.getElementById('mobile-modal').style.display = 'flex';
+    }
+
+    function closeMobileModal() {
+        document.getElementById('mobile-modal').style.display = 'none';
+    }
+
+    // ====================== Price WebSockets ======================
+    const priceSockets = {};
+    function connectPriceWebSocket(symbol) {
+        if (priceSockets[symbol]) return;
+        priceSockets[symbol] = createReconnectingWebSocket(
+            `ws://${window.location.host}/ws/price/${symbol}/`,
+            (data) => {
+                if (data.type === 'price_update') {
+                    const priceEl = document.getElementById(`price-${data.symbol}`);
+                    if (priceEl) {
+                        const old = parseFloat(priceEl.textContent) || 0;
+                        const newP = parseFloat(data.price);
+                        priceEl.textContent = newP.toFixed(6);
+                        priceEl.classList.add(newP > old ? 'price-up' : 'price-down');
+                        setTimeout(() => priceEl.classList.remove('price-up', 'price-down'), 200);
+                    }
+                    const currentPrices = document.querySelectorAll(`#current-price-${data.symbol}`);
+                    currentPrices.forEach(el => el.textContent = data.price.toFixed(6));
+                    updateClientPL(data.symbol, data.price);
+                }
+            }
+        );
+    }
+
+        function updateClientPL(symbol, current_price) {
+            const rows = document.querySelectorAll(`tr[data-symbol="${symbol}"]`);
+            let total_unrealized = 0;
+
+            rows.forEach(row => {
+                const type = row.dataset.type;
+                const volume = parseFloat(row.dataset.volume);
+                const open_price = parseFloat(row.dataset.openPrice);
+
+                let diff = current_price - open_price;
+                if (type === 'sell') diff = -diff;
+
+                // استفاده از تابع جدید (دقیقاً مثل بک‌اند)
+                const multiplier = getPlMultiplierPerLot(symbol);
+                let pl = diff * multiplier * volume;
+
+                const plEl = row.querySelector('[id^="pl-"]');
+                if (plEl) {
+                    plEl.textContent = pl.toFixed(2);
+                    plEl.classList.remove('price-up', 'price-down');
+                    if (pl > 0) plEl.classList.add('price-up');
+                    else if (pl < 0) plEl.classList.add('price-down');
+                }
+
+                total_unrealized += pl;
+            });
+
+            // آپدیت اکویتی زنده
+            const balanceEl = document.getElementById('balance-value');
+            if (balanceEl) {
+                const balance = parseFloat(balanceEl.textContent.replace(/[$,]/g, '').trim());
+                const equityEl = document.getElementById('equity-value');
+                if (equityEl) {
+                    equityEl.textContent = (balance + total_unrealized).toFixed(2) + ' $';
+                }
+            }
+        }
+
+    // ====================== Account & Positions WebSockets ======================
+    const userId = '';
+
+    const accountWs = createReconnectingWebSocket(
+        `ws://${window.location.host}/ws/account/${userId}/`,
+        (data) => {
+            if (data.type === 'account_update') {
+                document.getElementById('equity-value').textContent = data.equity.toFixed(2) + ' $';
+                document.getElementById('balance-value').textContent = data.balance.toFixed(2) + ' $';
+                document.getElementById('margin-used-value').textContent = data.margin_used.toFixed(2) + ' $';
+            }
+        }
+    );
+
+    const positionsWs = createReconnectingWebSocket(
+        `ws://${window.location.host}/ws/positions/${userId}/`,
+        (data) => {
+            if (data.type === 'positions_update') {
+                document.getElementById('equity-value').textContent = data.equity.toFixed(2) + ' $';
+                for (const [posId, pl] of Object.entries(data.pl_data || {})) {
+                    const plEl = document.getElementById(`pl-${posId}`);
+                    if (plEl) {
+                        plEl.textContent = Number(pl).toFixed(2);
+                        plEl.classList.remove('price-up', 'price-down');
+                        if (pl > 0) plEl.classList.add('price-up');
+                        else if (pl < 0) plEl.classList.add('price-down');
+                    }
+                }
+            } else if (data.type === 'position_closed') {
+                const row = document.querySelector(`#pl-${data.pos_id}`)?.closest('tr');
+                if (row) row.remove();
+            }
+        }
+    );
+
+    // ====================== Trade Functions ======================
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    let isSubmitting = false;
+
+    async function setTradeType(type) {
+        if (isSubmitting) return;
+        isSubmitting = true;
+
+        const buyBtn = document.querySelector('.trade-btn.buy');
+        const sellBtn = document.querySelector('.trade-btn.sell');
+        buyBtn.disabled = sellBtn.disabled = true;
+
+        document.getElementById('trade-type').value = type;
+        const form = document.querySelector('.trade-form');
+        const formData = new FormData(form);
+
+        try {
+            const res = await fetch('/new_order/', {
+                method: 'POST',
+                body: formData,
+                headers: { 'X-Requested-With': 'XMLHttpRequest', 'X-CSRFToken': csrfToken }
+            });
+            const data = await res.json();
+            const msgDiv = document.getElementById('trade-messages');
+            msgDiv.innerHTML = '';
+            if (data.status === 'success') {
+                msgDiv.innerHTML = '<p style="color: green;">معامله با موفقیت باز شد</p>';
+                const noPosRow = document.getElementById('no-positions-row');
+                if (noPosRow) noPosRow.remove();
+                const table = document.querySelector('#open_positions tbody');
+                const row = document.createElement('tr');
+                row.dataset.symbol = data.pos.symbol;
+                row.dataset.type = data.pos.type;
+                row.dataset.volume = data.pos.volume;
+                row.dataset.openPrice = data.pos.open_price;
+                row.innerHTML = `
+                    <td>${data.pos.id}</td>
+                    <td>${data.pos.symbol}</td>
+                    <td>${data.pos.type}</td>
+                    <td class="volume-cell">${data.pos.volume.toFixed(5)}</td>
+                    <td>${data.pos.open_price.toFixed(6)}</td>
+                    <td id="current-price-${data.pos.symbol}"></td>
+                    <td id="pl-${data.pos.id}">${data.pos.unrealized_pl.toFixed(2)}</td>
+                    <td>${data.pos.stop_loss ? parseFloat(data.pos.stop_loss).toFixed(5) : '—'}</td>
+                    <td>${data.pos.take_profit ? parseFloat(data.pos.take_profit).toFixed(5) : '—'}</td>
+                    <td>${data.pos.open_time}</td>
+                    <td>
+                        <div class="operations">
+                            <button class="partial-btn" onclick="partialClosePosition(${data.pos.id}, 0.25)">۲۵٪</button>
+                            <button class="partial-btn" onclick="partialClosePosition(${data.pos.id}, 0.5)">۵۰٪</button>
+                            <button class="partial-btn" onclick="partialClosePosition(${data.pos.id}, 0.75)">۷۵٪</button>
+                            <button class="close-btn" onclick="closePosition(${data.pos.id})">۱۰۰٪</button>
+                            <button class="edit-btn" onclick="openEditModal(${data.pos.id}, '${data.pos.stop_loss || ''}', '${data.pos.take_profit || ''}')">ویرایش</button>
+                        </div>
+                    </td>
+                `;
+                table.appendChild(row);
+                document.getElementById('equity-value').textContent = data.equity.toFixed(2) + ' $';
+                document.getElementById('balance-value').textContent = data.balance.toFixed(2) + ' $';
+                document.getElementById('margin-used-value').textContent = data.margin_used.toFixed(2) + ' $';
+            } else {
+                msgDiv.innerHTML = `<p style="color: red;">${data.message}</p>`;
+            }
+        } catch (err) {
+            console.error(err);
+        } finally {
+            isSubmitting = false;
+            buyBtn.disabled = sellBtn.disabled = false;
+        }
+    }
+
+    // ====================== Partial Close ======================
+    async function partialClosePosition(posId, percent) {
+        try {
+            const row = document.querySelector(`#pl-${posId}`).closest('tr');
+            if (!row) return;
+            const totalVolume = parseFloat(row.dataset.volume);
+            const closeVolume = (totalVolume * percent).toFixed(5);
+
+            const res = await fetch(`/partial_close/${posId}/`, {
+                method: 'POST',
+                headers: { 'X-Requested-With': 'XMLHttpRequest', 'X-CSRFToken': csrfToken },
+                body: new URLSearchParams({ volume: closeVolume })
+            });
+
+            const data = await res.json();
+            const msgDiv = document.getElementById('trade-messages');
+            msgDiv.innerHTML = data.status === 'success'
+                ? `<p style="color: green;">${data.message}</p>`
+                : `<p style="color: red;">${data.message}</p>`;
+
+            if (data.status === 'success') {
+                if (percent >= 1 || parseFloat(closeVolume) >= totalVolume) {
+                    row.remove();
+                } else {
+                    const newVolume = (totalVolume * (1 - percent)).toFixed(5);
+                    row.dataset.volume = newVolume;
+                    row.querySelector('.volume-cell').textContent = newVolume;
+                }
+                if (data.equity !== undefined) document.getElementById('equity-value').textContent = parseFloat(data.equity).toFixed(2) + ' $';
+                if (data.balance !== undefined) document.getElementById('balance-value').textContent = parseFloat(data.balance).toFixed(2) + ' $';
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    // ====================== Full Close ======================
+    async function closePosition(posId) {
+        const btn = event.currentTarget;
+        if (btn.disabled) return;
+        btn.disabled = true;
+        btn.innerHTML = '⏳';
+
+        try {
+            const res = await fetch(`/close_position/${posId}/`, {
+                method: 'POST',
+                headers: { 'X-Requested-With': 'XMLHttpRequest', 'X-CSRFToken': csrfToken }
+            });
+            const data = await res.json();
+            const msgDiv = document.getElementById('trade-messages');
+            if (data.status === 'success') {
+                msgDiv.innerHTML = '<p style="color: green;">✅ معامله بسته شد</p>';
+                const row = document.querySelector(`#pl-${data.pos_id}`)?.closest('tr');
+                if (row) row.remove();
+
+                const histTable = document.querySelector('#history tbody');
+                const histRow = document.createElement('tr');
+                histRow.className = data.hist.pl > 0 ? 'profit-row' : (data.hist.pl < 0 ? 'loss-row' : 'zero-row');
+                histRow.innerHTML = `
+                    <td>${data.hist.id}</td>
+                    <td>${data.hist.symbol}</td>
+                    <td>${data.hist.type}</td>
+                    <td>${data.hist.volume_closed ? parseFloat(data.hist.volume_closed).toFixed(5) : parseFloat(data.hist.volume).toFixed(5)}</td>
+                    <td>${data.hist.open_price.toFixed(6)}</td>
+                    <td>${data.hist.stop_loss ? parseFloat(data.hist.stop_loss).toFixed(5) : '—'}</td>
+                    <td>${data.hist.take_profit ? parseFloat(data.hist.take_profit).toFixed(5) : '—'}</td>
+                    <td>${data.hist.close_price.toFixed(6)}</td>
+                    <td class="${data.hist.pl > 0 ? 'pl-positive' : (data.hist.pl < 0 ? 'pl-negative' : 'pl-zero')}">${data.hist.pl.toFixed(2)}</td>
+                    <td>${data.hist.total_commission.toFixed(2)}</td>
+                    <td>${data.hist.open_time}</td>
+                    <td>${data.hist.close_time}</td>
+                `;
+                histTable.prepend(histRow);
+
+                document.getElementById('equity-value').textContent = data.equity.toFixed(2) + ' $';
+                document.getElementById('balance-value').textContent = data.balance.toFixed(2) + ' $';
+                document.getElementById('margin-used-value').textContent = data.margin_used.toFixed(2) + ' $';
+
+                const openTable = document.querySelector('#open_positions tbody');
+                if (openTable.children.length === 0) {
+                    const noPosRow = document.createElement('tr');
+                    noPosRow.id = 'no-positions-row';
+                    noPosRow.innerHTML = '<td colspan="11">هیچ پوزیشنی باز نیست</td>';
+                    openTable.appendChild(noPosRow);
+                }
+            } else {
+                msgDiv.innerHTML = `<p style="color: red;">${data.message || 'خطا'}</p>`;
+            }
+        } catch (err) {
+            console.error(err);
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = '۱۰۰٪';
+        }
+    }
+
+    // ====================== Edit SL/TP ======================
+    function openEditModal(posId, currentSL, currentTP) {
+        document.getElementById('edit-pos-id').value = posId;
+        document.getElementById('modal-sl').value = currentSL || '';
+        document.getElementById('modal-tp').value = currentTP || '';
+        document.getElementById('edit-modal').style.display = 'flex';
+    }
+
+    function closeEditModal() {
+        document.getElementById('edit-modal').style.display = 'none';
+    }
+
+    async function saveEditPosition() {
+        const posId = document.getElementById('edit-pos-id').value;
+        const newSL = document.getElementById('modal-sl').value;
+        const newTP = document.getElementById('modal-tp').value;
+
+        try {
+            const res = await fetch(`/edit_position/${posId}/`, {
+                method: 'POST',
+                headers: { 'X-Requested-With': 'XMLHttpRequest', 'X-CSRFToken': csrfToken },
+                body: new URLSearchParams({ stop_loss: newSL, take_profit: newTP })
+            });
+            const data = await res.json();
+            const msgDiv = document.getElementById('trade-messages');
+            if (data.status === 'success') {
+                msgDiv.innerHTML = `<p style="color: green;">${data.message}</p>`;
+                closeEditModal();
+            } else {
+                msgDiv.innerHTML = `<p style="color: red;">${data.message}</p>`;
+            }
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+          // ====================== PL Multiplier برای همه نمادها (نسخه نهایی و قوی) ======================
+    function getPlMultiplierPerLot(symbol) {
+    if (!symbol) return 1;
+
+    const s = String(symbol).trim().toUpperCase();
+
+    const multipliers = {
+        'FXCM_EURUSD': 100000,
+        'FXCM_AUDUSD': 100000,
+        'FXCM_NZDUSD': 100000,
+        'FXCM_USDJPY': 100000,
+        'FXCM_US30': 10,
+        'NAS100_USD': 1,
+        'FXCM_USOIL': 10,
+        'XAU_USD': 100,
+        'ETHUSDT': 1,
+
+        // alias بدون پیشوند (برای ایمنی بیشتر)
+        'EURUSD': 100000,
+        'AUDUSD': 100000,
+        'NZDUSD': 100000,
+        'USDJPY': 100000,
+        'US30': 10,
+        'NAS100': 1,
+        'USOIL': 10,
+        'XAUUSD': 100
+    };
+
+    const mult = multipliers[s] || 1;
+    console.log(`[PL-MULT] ${symbol} → multiplier = ${mult}`);
+    return mult;
+}
+    function openRiskModal() {
+        document.getElementById('risk-modal').style.display = 'flex';
+        const mainSL = document.getElementById('sl-input').value;
+        if (mainSL) document.getElementById('modal-sl-input').value = mainSL;
+    }
+
+    function closeRiskModal() {
+        document.getElementById('risk-modal').style.display = 'none';
+    }
+
+    window.calculateSafeVolumeModal = function() {
+        const symbol = document.getElementById('trade-symbol').value;
+        const slInput = parseFloat(document.getElementById('modal-sl-input').value);
+        const riskPercent = parseFloat(document.getElementById('modal-risk-percent').value) || 1;
+        const balanceText = document.getElementById('balance-value').textContent;
+        const balance = parseFloat(balanceText.replace(/[$,]/g, '').trim());
+
+        if (!slInput || slInput <= 0) {
+            alert('⚠️ لطفاً استاپ لاس معتبر وارد کنید!');
+            return;
+        }
+        if (!balance || balance <= 0) {
+            alert('⚠️ بالانس خوانده نشد!');
+            return;
+        }
+
+        let currentPrice = 0;
+        const priceEl = document.getElementById(`price-${symbol}`);
+        if (priceEl) currentPrice = parseFloat(priceEl.textContent);
+
+        if (!currentPrice || currentPrice <= 0) {
+            alert('⚠️ قیمت فعلی نماد پیدا نشد. اول نماد رو انتخاب کن.');
+            return;
+        }
+
+        const slDistance = Math.abs(slInput - currentPrice);
+        const multiplier = getPlMultiplierPerLot(symbol);
+        const riskAmount = (balance * riskPercent) / 100;
+
+        let safeVolume = riskAmount / (slDistance * multiplier);
+        safeVolume = Math.max(0.01, parseFloat(safeVolume.toFixed(3)));
+
+        window.calculatedSafeVolume = safeVolume;
+
+        const riskInfo = document.getElementById('modal-risk-info');
+        riskInfo.innerHTML = `
+            <strong>ریسک:</strong> ${riskAmount.toFixed(2)}$ (${riskPercent}%)<br>
+            <strong>فاصله تا SL:</strong> ${slDistance.toFixed(5)}<br>
+            <strong>Multiplier:</strong> ${multiplier.toFixed(0)}<br>
+            <span style="color:#16a34a;font-size:1.1rem">
+                حجم پیشنهادی: <strong>${safeVolume}</strong> لات
+            </span>
+        `;
+    };
+
+    window.applyVolumeToMainForm = function() {
+        if (typeof window.calculatedSafeVolume === 'undefined') {
+            alert('ابتدا حجم را محاسبه کنید!');
+            return;
+        }
+        document.getElementById('volume-input').value = window.calculatedSafeVolume;
+        closeRiskModal();
+        alert('✅ حجم به فرم اصلی اعمال شد!');
+    };
+
+    // ====================== Pending Order Modal Functions ======================
+    function openPendingModal() {
+        document.getElementById('pending-modal').style.display = 'flex';
+    }
+
+    function closePendingModal() {
+        document.getElementById('pending-modal').style.display = 'none';
+    }
+
+    async function createPendingOrder() {
+        const form = document.getElementById('pending-form');
+        const formData = new FormData(form);
+
+        try {
+            const res = await fetch('/create_pending_order/', {
+                method: 'POST',
+                body: formData,
+                headers: { 'X-Requested-With': 'XMLHttpRequest', 'X-CSRFToken': csrfToken }
+            });
+            const data = await res.json();
+
+            if (data.status === 'success') {
+                const tbody = document.querySelector('#pending-table tbody');
+                if (document.getElementById('no-pending-row')) tbody.innerHTML = '';
+
+                const row = document.createElement('tr');
+                row.id = `pending-row-${data.order_id}`;
+                row.innerHTML = `
+                    <td>${data.order_id}</td>
+                    <td>${formData.get('symbol')}</td>
+                    <td>${formData.get('order_type')}</td>
+                    <td>${parseFloat(formData.get('volume')).toFixed(2)}</td>
+                    <td>${parseFloat(formData.get('entry_price')).toFixed(5)}</td>
+                    <td>${formData.get('stop_loss') || '—'}</td>
+                    <td>${formData.get('take_profit') || '—'}</td>
+                    <td>همین الان</td>
+                    <td><button class="close-btn" onclick="cancelPendingOrder(${data.order_id})">لغو</button></td>
+                `;
+                tbody.appendChild(row);
+
+                form.reset();
+                closePendingModal();
+                alert('✅ اوردر پندینگ با موفقیت ثبت شد');
+            } else {
+                alert('❌ ' + (data.message || 'خطا'));
+            }
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    async function cancelPendingOrder(orderId) {
+        if (!confirm('آیا از لغو این اوردر پندینگ مطمئن هستید؟')) return;
+
+        try {
+            const res = await fetch(`/cancel_pending_order/${orderId}/`, {
+                method: 'POST',
+                headers: { 'X-Requested-With': 'XMLHttpRequest', 'X-CSRFToken': csrfToken }
+            });
+            const data = await res.json();
+
+            if (data.status === 'success') {
+                const row = document.getElementById(`pending-row-${orderId}`);
+                if (row) row.remove();
+
+                if (document.querySelectorAll('#pending-table tbody tr').length === 0) {
+                    document.querySelector('#pending-table tbody').innerHTML =
+                        `<tr id="no-pending-row"><td colspan="9" style="text-align:center;color:#64748b;">هیچ اوردر پندینگی فعال نیست</td></tr>`;
+                }
+            }
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    // ====================== Initialize - نسخه کامل ======================
+    document.addEventListener('DOMContentLoaded', () => {
+        // تم
+        const savedTheme = localStorage.getItem('apex-theme') || 'light';
+        applyTheme(savedTheme);
+
+        // اتصال وب‌سوکت قیمت برای همه نمادها
+
+            connectPriceWebSocket('US30');
+
+            connectPriceWebSocket('XAUUSD');
+
+            connectPriceWebSocket('EURUSD');
+
+            connectPriceWebSocket('AUDUSD');
+
+            connectPriceWebSocket('NZDUSD');
+
+            connectPriceWebSocket('USDJPY');
+
+            connectPriceWebSocket('NAS100');
+
+            connectPriceWebSocket('USOIL');
+
+            connectPriceWebSocket('ETHUSDT');
+
+
+        // اگر هیچ پوزیشنی نبود، اکویتی = بالانس
+        if (document.querySelector('#open_positions tbody').children.length === 0) {
+            const balance = document.getElementById('balance-value').textContent;
+            document.getElementById('equity-value').textContent = balance;
+        }
+
+        // کلیک روی دکمه‌های بالای چارت
+        const symbolButtons = document.querySelectorAll('#symbol-selector .symbol-btn');
+        symbolButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                loadBitycleChart(btn.dataset.symbol);
+            });
+        });
+
+        // *** مهم: انتخاب نماد از فرم معامله → تغییر چارت ***
+        const tradeSymbolSelect = document.getElementById('trade-symbol');
+        if (tradeSymbolSelect) {
+            tradeSymbolSelect.addEventListener('change', function() {
+                const selectedSymbol = this.value;
+                if (selectedSymbol) {
+                    loadBitycleChart(selectedSymbol);
+                }
+            });
+        }
+
+        // لود اولیه چارت
+        setTimeout(() => {
+            loadBitycleChart('US30');
+        }, 500);
+
+        console.log('✅ proopco Trader کاملاً بارگذاری و سینک شد');
+    });
+</script>
+</body>
+</html>
