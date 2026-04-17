@@ -18,23 +18,17 @@
                     style="height: 25px; width: auto; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));">
 
                 <!-- عنوان -->
-                <h1 style="margin: 0; 
-                        font-size: 1.1rem; 
-                        font-weight: 400; 
-                        letter-spacing: -0.03em; 
-                        color: #b9a278;
-                        opacity: 0;
-                        visibility: hidden;
-                        position: absolute;
-                        text-indent: -9999px;
-                        font-family: 'Estedad', sans-serif;">
+                <h1>
                     پراپ تـریدر پراپکو
                 </h1>
             </div>
 
             <!-- بخش راست هدر: تم + خروج -->
             <div style="display: flex; align-items: center; gap: 16px;">
-                <a href="{% url 'logout' %}" class="logout-btn">خروج</a>
+                <a href="{% url 'logout' %}" class="logout-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-log-out-icon lucide-log-out"><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/></svg>
+                    خروج
+                </a>
             </div>
         </header>
 
@@ -96,7 +90,7 @@
                     <button class="symbol-btn" data-symbol="FXCM_USOIL">USOIL</button>
                     <button class="symbol-btn" data-symbol="ETHUSDT">ETHUSDT</button>
                 </div>
-                <div style="width: 100%; flex: 1; min-height: 0; display: flex; flex-direction: column; align-items: center; background: var(--bg-panel); overflow: hidden;">
+                <div class="chart-box">
                     <div id="bitycle-ac-widget" style="width: 100%; height: 100%; min-height: 0;"></div>
                 </div>
             </div>
@@ -562,6 +556,7 @@
             const tradeSelect = document.getElementById('trade-symbol');
             if (tradeSelect) {
                 tradeSelect.value = symbol;
+                tradeSelect.dispatchEvent(new Event("change"));
             }
 
             console.log(` چارت تغییر کرد به: ${symbol} | ویجت: ${widgetSymbol}`);
@@ -610,63 +605,100 @@
         const priceSockets = {};
         function connectPriceWebSocket(symbol) {
             if (priceSockets[symbol]) return;
+
             priceSockets[symbol] = createReconnectingWebSocket(
                 `ws://${window.location.host}/ws/price/${symbol}/`,
                 (data) => {
                     if (data.type === 'price_update') {
-                        const priceEl = document.getElementById(`price-${data.symbol}`);
-                        if (priceEl) {
+
+                        const priceElements = document.querySelectorAll(`#price-${data.symbol}`);
+
+                        priceElements.forEach(priceEl => {
                             const old = parseFloat(priceEl.textContent) || 0;
                             const newP = parseFloat(data.price);
+
                             priceEl.textContent = newP.toFixed(6);
-                            priceEl.classList.add(newP > old ? 'price-up' : 'price-down');
-                            setTimeout(() => priceEl.classList.remove('price-up', 'price-down'), 200);
-                        }
+
+                            const isUp = newP > old;
+                            const isDown = newP < old;
+
+                            // پاک کردن کلاس‌های قبلی
+                            priceEl.classList.remove('price-up', 'price-down');
+
+                            // اعمال روی خود قیمت
+                            if (isUp) priceEl.classList.add('price-up');
+                            else if (isDown) priceEl.classList.add('price-down');
+
+                            // اعمال روی والد .symbol-item
+                            const parentItem = priceEl.closest('.symbol-item');
+                            if (parentItem) {
+                                parentItem.classList.remove('price-up', 'price-down');
+
+                                if (isUp) parentItem.classList.add('price-up');
+                                else if (isDown) parentItem.classList.add('price-down');
+
+                                setTimeout(() => {
+                                    parentItem.classList.remove('price-up', 'price-down');
+                                }, 200);
+                            }
+
+                            // حذف افکت از خود price
+                            setTimeout(() => {
+                                priceEl.classList.remove('price-up', 'price-down');
+                            }, 200);
+                        });
+
+                        // آپدیت سایر price ها
                         const currentPrices = document.querySelectorAll(`#current-price-${data.symbol}`);
-                        currentPrices.forEach(el => el.textContent = data.price.toFixed(6));
-                        updateClientPL(data.symbol, data.price);
+                        currentPrices.forEach(el => {
+                            el.textContent = parseFloat(data.price).toFixed(6);
+                        });
+
+                        updateClientPL(data.symbol, parseFloat(data.price));
                     }
                 }
             );
         }
 
-            function updateClientPL(symbol, current_price) {
-                const rows = document.querySelectorAll(`tr[data-symbol="${symbol}"]`);
-                let total_unrealized = 0;
 
-                rows.forEach(row => {
-                    const type = row.dataset.type;
-                    const volume = parseFloat(row.dataset.volume);
-                    const open_price = parseFloat(row.dataset.openPrice);
+        function updateClientPL(symbol, current_price) {
+            const rows = document.querySelectorAll(`tr[data-symbol="${symbol}"]`);
+            let total_unrealized = 0;
 
-                    let diff = current_price - open_price;
-                    if (type === 'sell') diff = -diff;
+            rows.forEach(row => {
+                const type = row.dataset.type;
+                const volume = parseFloat(row.dataset.volume);
+                const open_price = parseFloat(row.dataset.openPrice);
 
-                    // استفاده از تابع جدید (دقیقاً مثل بک‌اند)
-                    const multiplier = getPlMultiplierPerLot(symbol);
-                    let pl = diff * multiplier * volume;
+                let diff = current_price - open_price;
+                if (type === 'sell') diff = -diff;
 
-                    const plEl = row.querySelector('[id^="pl-"]');
-                    if (plEl) {
-                        plEl.textContent = pl.toFixed(2);
-                        plEl.classList.remove('price-up', 'price-down');
-                        if (pl > 0) plEl.classList.add('price-up');
-                        else if (pl < 0) plEl.classList.add('price-down');
-                    }
+                const multiplier = getPlMultiplierPerLot(symbol);
+                let pl = diff * multiplier * volume;
 
-                    total_unrealized += pl;
-                });
+                const plEl = row.querySelector('[id^="pl-"]');
+                if (plEl) {
+                    plEl.textContent = pl.toFixed(2);
 
-                // آپدیت اکویتی زنده
-                const balanceEl = document.getElementById('balance-value');
-                if (balanceEl) {
-                    const balance = parseFloat(balanceEl.textContent.replace(/[$,]/g, '').trim());
-                    const equityEl = document.getElementById('equity-value');
-                    if (equityEl) {
-                        equityEl.textContent = (balance + total_unrealized).toFixed(2) + ' $';
-                    }
+                    plEl.classList.remove('price-up', 'price-down');
+                    if (pl > 0) plEl.classList.add('price-up');
+                    else if (pl < 0) plEl.classList.add('price-down');
+                }
+
+                total_unrealized += pl;
+            });
+
+            // آپدیت equity
+            const balanceEl = document.getElementById('balance-value');
+            if (balanceEl) {
+                const balance = parseFloat(balanceEl.textContent.replace(/[$,]/g, '').trim());
+                const equityEl = document.getElementById('equity-value');
+
+                if (equityEl) {
+                    equityEl.textContent = (balance + total_unrealized).toFixed(2) + ' $';
                 }
             }
+        }
 
         // ====================== Account & Positions WebSockets ======================
         const userId = '{{ request.user.id }}';
@@ -1083,7 +1115,7 @@
         // ====================== Custom Form Components ======================
 
         function setupCustomSelects() {
-            const selects = document.querySelectorAll('select.trade-input');
+            const selects = document.querySelectorAll('select.trade-input, select.modal-input');
             
             selects.forEach(select => {
                 if (select.nextElementSibling && select.nextElementSibling.classList.contains('custom-select-wrapper')) {
@@ -1095,18 +1127,27 @@
                 wrapper.className = 'custom-select-wrapper';
                 
                 const trigger = document.createElement('div');
-                trigger.className = 'custom-select-trigger trade-input';
+                trigger.className = `custom-select-trigger ${select.classList.contains('trade-input') ? 'trade-input' : 'modal-input'}`;
                 trigger.tabIndex = 0;
                 
                 const selectedText = document.createElement('span');
                 selectedText.textContent = select.options[select.selectedIndex]?.text || '';
                 
-                const arrow = document.createElement('svg');
-                arrow.innerHTML = '<path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>';
+                const arrow = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
                 arrow.setAttribute('viewBox', '0 0 24 24');
                 arrow.setAttribute('width', '16');
                 arrow.setAttribute('height', '16');
-                arrow.className = 'custom-select-arrow';
+                arrow.setAttribute('fill', 'none');
+                arrow.setAttribute('stroke', 'currentColor');
+                arrow.setAttribute('stroke-width', '2');
+                arrow.setAttribute('stroke-linecap', 'round');
+                arrow.setAttribute('stroke-linejoin', 'round');
+                arrow.classList.add('custom-select-arrow');
+
+                const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                path.setAttribute('d', 'M6 9l6 6 6-6');
+
+                arrow.appendChild(path);
                 
                 trigger.appendChild(selectedText);
                 trigger.appendChild(arrow);
