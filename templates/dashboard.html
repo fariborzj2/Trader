@@ -759,17 +759,26 @@
                 });
                 const data = await res.json();
                 const msgDiv = document.getElementById('trade-messages');
-                msgDiv.innerHTML = '';
+
+                // ریست وضعیت قبلی
+                msgDiv.classList.remove('success', 'error');
+                msgDiv.textContent = '';
+
                 if (data.status === 'success') {
-                    msgDiv.innerHTML = '<p style="color: green;">معامله با موفقیت باز شد</p>';
+                    msgDiv.classList.add('success');
+                    msgDiv.textContent = 'معامله با موفقیت باز شد';
+
                     const noPosRow = document.getElementById('no-positions-row');
                     if (noPosRow) noPosRow.remove();
+
                     const table = document.querySelector('#open_positions tbody');
+
                     const row = document.createElement('tr');
                     row.dataset.symbol = data.pos.symbol;
                     row.dataset.type = data.pos.type;
                     row.dataset.volume = data.pos.volume;
                     row.dataset.openPrice = data.pos.open_price;
+
                     row.innerHTML = `
                         <td>${data.pos.id}</td>
                         <td>${data.pos.symbol}</td>
@@ -791,12 +800,16 @@
                             </div>
                         </td>
                     `;
+
                     table.appendChild(row);
+
                     document.getElementById('equity-value').textContent = data.equity.toFixed(2) + ' $';
                     document.getElementById('balance-value').textContent = data.balance.toFixed(2) + ' $';
                     document.getElementById('margin-used-value').textContent = data.margin_used.toFixed(2) + ' $';
+
                 } else {
-                    msgDiv.innerHTML = `<p style="color: red;">${data.message}</p>`;
+                    msgDiv.classList.add('error');
+                    msgDiv.textContent = data.message;
                 }
             } catch (err) {
                 console.error(err);
